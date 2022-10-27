@@ -4,14 +4,31 @@ import { BsPeople, BsBookmarks} from "react-icons/bs";
 import { MdDarkMode, MdLogout} from "react-icons/md";
 import profileImage from "../assets/empty-avatar.jpg";
 import { Link, useLocation } from "react-router-dom";
+import { logout } from "../firebase";
 
 const Navbar = (props) => {
     const location = useLocation();
-
+    const [loading, setLoading] = useState(false);
     const [dropdown, setDropdown] = useState(false);
     
     const [focusedIcon, setFocusedIcon] = useState(`${location.pathname}`);
     const dropdownRef = useRef();
+
+    async function handleLogout() {
+        if(!navigator.onLine){
+            alert("No Internet Connection");
+            return;
+        }
+        setLoading(true);
+        try {
+          await logout();
+          console.log("LOGOUT PLEAAAASE");
+          props.loggedInHandler(false);
+        } catch {
+          alert("Error!");
+        }
+        setLoading(false);
+    }
 
     useEffect(()=>{
         const closeDropdown = e=>{
@@ -65,7 +82,7 @@ const Navbar = (props) => {
                                 <AiOutlineSetting className="dropdown-menu-item-icon" size={24}/>
                                 <p>Settings</p>
                             </Link>
-                            <Link to="/" className="dropdown-menu-item" onClick={()=> props.loggedInHandler(false)}>
+                            <Link to="/" className="dropdown-menu-item" style={{pointerEvents:`${loading?"none":"auto"}`}} onClick={ handleLogout }>
                                 <MdLogout className="dropdown-menu-item-icon" size={24}/>
                                 <p>Logout</p>
                             </Link>

@@ -2,9 +2,29 @@ import profileImage from "../assets/empty-avatar.jpg";
 import { AiOutlineMenu, AiOutlineSetting, AiOutlineBell, AiOutlineHome } from "react-icons/ai";
 import { BsBookmarks, BsPeople } from "react-icons/bs";
 import { MdDarkMode, MdLogout } from "react-icons/md";
+import { logout } from "../firebase";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const SideNavbar = (props) => {
+    const [loading, setLoading] = useState(false);
+    
+    async function handleLogout() {
+        if(!navigator.onLine){
+            alert("No Internet Connection");
+            return;
+        }
+        
+        setLoading(true);
+        try {
+          await logout();
+          props.loggedInHandler(false);
+          props.openSideNavbarHandler[1](false);
+        } catch {
+          alert("Error!");
+        }
+        setLoading(false);
+    }
 
     return (<div style={{left:`${props.openSideNavbarHandler[0]?"0":"-240"}px`}} className="side-navbar">
                 <div className="side-navbar-logo-section">
@@ -42,8 +62,8 @@ const SideNavbar = (props) => {
                                 <MdDarkMode className="dropdown-menu-item-icon" size={30}/>
                                 <p>{props.themeMode==="dark"?"Dark":"Light"}</p>
                             </div>
-                            <Link to="/" className="side-navbar-menu-item" onClick={()=>{ props.loggedInHandler(false);
-                                props.openSideNavbarHandler[1](false);}}>
+                            <Link to="/" className="side-navbar-menu-item" style={{pointerEvents:`${loading?"none":"auto"}`}} onClick={()=>{ handleLogout();
+                                }}>
                                 <MdLogout className="dropdown-menu-item-icon" size={30}/>
                                 <p>Logout</p>
                             </Link>

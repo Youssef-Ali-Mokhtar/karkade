@@ -16,7 +16,6 @@ const PostDetailsBody = (props) => {
           });
     },[])
 
-    console.log(props.data.comments);
     return ( <div className="post-details-body">
                 <div className="post-text-content">
                     <div className="original-poster-section">

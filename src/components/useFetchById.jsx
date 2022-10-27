@@ -6,6 +6,7 @@ const useFetchById = (url) => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
+    console.log("Hey2!");
     setLoadingMessage(true);
     setErrorMessage(false);
     setData(false);

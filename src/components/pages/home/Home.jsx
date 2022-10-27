@@ -1,8 +1,9 @@
 import List from "../../List";
 import Post from "./Post";
 import FloatingPostButton from "../../FloatingPostButton";
-
+import { getUserInfo } from "../../../firebase";
 const Home = (props) => {
+    
     const {data: blogPosts,
     loadingMessage,
     errorMessage} = props.data;

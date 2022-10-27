@@ -15,6 +15,7 @@ import Login from "./components/login/Login";
 import FloatingSearch from "./components/FloatingSearch";
 import PostDetails from "./components/pages/home/PostDetails";
 import useFetch from "./components/useFetch";
+import { getUserInfo } from "./firebase";
 //
 function App() {
   const [floatingSearch, setFloatingSearch] = useState(false);
@@ -26,13 +27,10 @@ function App() {
   const r = document.querySelector(":root");
   const LIGHT = "light";
   const DARK = "dark";
-
   const fetchedData = useFetch(
     "https://test-blog-bdc36-default-rtdb.firebaseio.com/posts.json"
   );
-
-  // console.log(fetchedData);
-
+  // console.log(getUserInfo().uid);
   useEffect(() => {
     if (localStorage.getItem("themeMode") === "dark") {
       setThemeMode(DARK);
@@ -63,14 +61,15 @@ function App() {
     }
   };
 
-  changeThemeMode();
 
+
+  changeThemeMode();
   const themeModeSwitchHandler = () => {
     setThemeMode(themeMode === LIGHT ? DARK : LIGHT);
     changeThemeMode();
     localStorage.setItem("themeMode", themeMode === LIGHT ? DARK : LIGHT);
   };
-
+  console.log(localStorage.getItem("useId"));
   useEffect(() => {
     if (window.innerWidth <= 1020) {
       setmobileMode(true);
@@ -183,7 +182,11 @@ function App() {
               <Route exact path="/Profile/*" element={<Profile />} />
               <Route exact path="/Bookmarks" element={<Bookmarks />} />
               <Route exact path="/Settings" element={<Settings />} />
-              <Route exact path="/posts/:id" element={<PostDetails data={fetchedData}/>} />
+              <Route
+                exact
+                path="/posts/:id"
+                element={<PostDetails data={fetchedData} />}
+              />
             </Routes>
           </div>
         </Router>
