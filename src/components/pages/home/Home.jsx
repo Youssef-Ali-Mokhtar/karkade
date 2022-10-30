@@ -9,7 +9,7 @@ const Home = (props) => {
     errorMessage} = props.data;
     return ( <div className="home">
         {loadingMessage && <div>Loading...</div>}
-        {blogPosts && 
+        {blogPosts &&
             <List>
                 {blogPosts.map((post)=>{
                     return <Post post={post} key={post.id}/>

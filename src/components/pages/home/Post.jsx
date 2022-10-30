@@ -31,7 +31,6 @@ const Post = (props) => {
                     <p className="post-title">{props.post.title}</p>
                 </div>
                 
-                
                 <div className="post-image-holder">
                     {/* {props.image?<img alt="pic" src={props.image} />:""} */}
                     <img alt="pic" src={"https://i.imgur.com/eTksRja.jpg"} />

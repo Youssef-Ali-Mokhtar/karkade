@@ -72,7 +72,7 @@ export function useAuth() {
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) =>
-      localStorage.setItem("user", user)
+      localStorage.setItem("userId", user)
     );
     return unsub;
   }, []);
@@ -87,11 +87,17 @@ export function writeUserData(username, email) {
   set(reference, {
     username: username,
     email: email,
+    country: "",
+    bio: "My funny collection",
+    imageUrl: "",
+    following: [],
+    followers: [],
+    posts: [],
+    savedPosts: [],
   });
 }
 
 export function getProfileName(userId) {
   const profileNameRef = ref(db, `users/${userId}/username`);
-  console.log(getUserInfo().uid);
   return profileNameRef;
 }

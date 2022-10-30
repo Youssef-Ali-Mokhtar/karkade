@@ -61,8 +61,6 @@ function App() {
     }
   };
 
-
-
   changeThemeMode();
   const themeModeSwitchHandler = () => {
     setThemeMode(themeMode === LIGHT ? DARK : LIGHT);
@@ -129,6 +127,13 @@ function App() {
               loggedInHandler={loggedInHandler}
             />
           )}
+
+          {/* <Overlay
+            onClick={() => setOverlayUpdateInfo(false)}
+            overlay={overlayUpdateInfo}
+          >
+
+          </Overlay> */}
 
           <Overlay
             onClick={() => setOpenSideNavbar(false)}

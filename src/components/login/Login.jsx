@@ -12,6 +12,7 @@ const Login = (props) => {
     const passwordRef = useRef();
     
     async function handleLogin() {
+        console.log("LOGIN HANDLE");
       setLoading(true);
       try {
         await login(emailRef.current.value, passwordRef.current.value);
@@ -20,7 +21,7 @@ const Login = (props) => {
         alert("Error!");
       }
       console.log(getUserInfo());
-      localStorage.setItem("user", getUserInfo().uid);
+      localStorage.setItem("userId", getUserInfo().uid);
       setLoading(false);
     }
 

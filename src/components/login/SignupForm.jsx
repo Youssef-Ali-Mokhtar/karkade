@@ -1,6 +1,6 @@
 import SubLoginForm from "../SubLoginForm";
 import { useRef, useState } from "react";
-import { signup, writeUserData} from "../../firebase";
+import { signup, writeUserData, getUserInfo} from "../../firebase";
 
 const SignupForm = (props) => {
     // const [error, setError] = useState('');
@@ -19,12 +19,12 @@ const SignupForm = (props) => {
         }
         await signup(emailRef.current.value, passwordRef.current.value);
         props.loggedInHandler(true);
+        
       } catch {
         alert("Can't sign up!");
       }
-      
       writeUserData(usernameRef.current.value, emailRef.current.value);
-      
+      localStorage.setItem("userId", getUserInfo().uid);
       setLoading(false);
     }
 
