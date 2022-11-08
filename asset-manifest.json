@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/karkade/static/css/main.95926c38.css",
+    "main.js": "/karkade/static/js/main.7bbbe86a.js",
+    "static/media/maybe.jpg": "/karkade/static/media/maybe.aee3aa3be00b34532de4.jpg",
+    "static/media/loading.svg": "/karkade/static/media/loading.22ffa5bb8b838b80fa53868bc346a73f.svg",
+    "index.html": "/karkade/index.html",
+    "main.95926c38.css.map": "/karkade/static/css/main.95926c38.css.map",
+    "main.7bbbe86a.js.map": "/karkade/static/js/main.7bbbe86a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.95926c38.css",
+    "static/js/main.7bbbe86a.js"
+  ]
+}
