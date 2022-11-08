@@ -9,22 +9,23 @@ import { useState } from "react";
 const SideNavbar = (props) => {
     const [loading, setLoading] = useState(false);
     
-    async function handleLogout() {
-        if(!navigator.onLine){
-            alert("No Internet Connection");
-            return;
-        }
+    // async function handleLogout() {
+    //     if(!navigator.onLine){
+    //         alert("No Internet Connection");
+    //         return;
+    //     }
         
-        setLoading(true);
-        try {
-          await logout();
-          props.loggedInHandler(false);
-          props.openSideNavbarHandler[1](false);
-        } catch {
-          alert("Error!");
-        }
-        setLoading(false);
-    }
+    //     setLoading(true);
+    //     try {
+    //       await logout();
+    //       props.loggedInHandler(false);
+    //       props.openSideNavbarHandler[1](false);
+    //     } catch {
+    //       alert("Error!");
+    //     }
+    //     localStorage.setItem("userId", null);
+    //     setLoading(false);
+    // }
 
     return (<div style={{left:`${props.openSideNavbarHandler[0]?"0":"-240"}px`}} className="side-navbar">
                 <div className="side-navbar-logo-section">
@@ -62,7 +63,10 @@ const SideNavbar = (props) => {
                                 <MdDarkMode className="dropdown-menu-item-icon" size={30}/>
                                 <p>{props.themeMode==="dark"?"Dark":"Light"}</p>
                             </div>
-                            <Link to="/" className="side-navbar-menu-item" style={{pointerEvents:`${loading?"none":"auto"}`}} onClick={()=>{ handleLogout();
+                            <Link to="/" className="side-navbar-menu-item" style={{pointerEvents:`${loading?"none":"auto"}`}} onClick={()=>{
+                                
+                                props.loggedInHandler(false);
+                                props.openSideNavbarHandler[1](false);
                                 }}>
                                 <MdLogout className="dropdown-menu-item-icon" size={30}/>
                                 <p>Logout</p>

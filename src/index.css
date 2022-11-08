@@ -204,9 +204,18 @@ a{
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-
 .dropdown{
   position:relative;
+}
+
+.background{
+  background-color: transparent;
+}
+
+.dropdown img{
+  width: 25px;
+  height:25px;
+  object-fit: cover;
 }
 
 .dropdown-menu{
@@ -252,7 +261,9 @@ a{
 }
 
 .dropdown-profile-image-section img{
+  width:40px;
   height:40px;
+  object-fit: cover;
   transition: all 0.3s ease-in-out;
 }
 
@@ -1347,6 +1358,79 @@ a{
   font-size: 14px;
   font-weight: 500;
   color:var(--hoverTextTheme);
+}
+
+.update-profile-info{
+  width: 100%;
+  height:100%;
+  padding:20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.update-profile-info p{
+  padding:10px;
+  color:var(--dropdownMenuColor);
+  cursor: pointer;
+}
+
+.update-profile-pic-wrapper{
+  width: fit-content;
+  height: fit-content;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.update-profile-pic-icon{
+  position: absolute;
+  z-index: 6;
+  opacity: 0;
+  color:#2E69FF;
+  transition: all 0.3s ease-in-out;
+}
+
+.update-profile-pic{
+  width:150px;
+  height:150px;
+  border-radius: 50%;
+  /* border: 1px solid lightgrey; */
+  object-fit: cover;
+}
+
+.update-profile-pic-wrapper:hover > *{
+  opacity: 1;
+}
+
+.update-profile-info-item{
+  width: 100%;
+  height:fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.settings-profile-pic-wrapper{
+  width:100%;
+  height:fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding:20px;
+}
+
+.settings-profile-pic-wrapper p{
+  padding:20px;
+}
+
+.spinning-wheel{
+  width:40px;
+  height: 40px;
 }
 
 ::-webkit-scrollbar {

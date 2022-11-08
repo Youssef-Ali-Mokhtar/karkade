@@ -1,6 +1,8 @@
 import SubLoginForm from "../SubLoginForm";
 import { useRef, useState } from "react";
-import { signup, writeUserData, getUserInfo} from "../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../firebase";
+import { ref, set } from "firebase/database";
 
 const SignupForm = (props) => {
     // const [error, setError] = useState('');
@@ -10,38 +12,54 @@ const SignupForm = (props) => {
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
   
-    async function handleSignup() {
+
+    const register = async (e)=>{
+      e.preventDefault();
+      console.log("SIGN UP");
       setLoading(true);
-      try {
-        if(passwordRef.current.value !== confirmPasswordRef.current.value){
-            alert("Passwords don't match!");
+      if(passwordRef.current.value !== confirmPasswordRef.current.value){
+          alert("Passwords don't match!");
             return;
-        }
-        await signup(emailRef.current.value, passwordRef.current.value);
-        props.loggedInHandler(true);
-        
-      } catch {
-        alert("Can't sign up!");
       }
-      writeUserData(usernameRef.current.value, emailRef.current.value);
-      localStorage.setItem("userId", getUserInfo().uid);
+      try{
+        const user = await createUserWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value);
+        localStorage.setItem("userId", user.user.uid);
+        writeUserData(usernameRef.current.value, emailRef.current.value, user.user.uid);
+        props.overlayHandler(false);
+        props.loggedInHandler(true);
+      }catch(error){
+        console.log(error.message);
+      }
       setLoading(false);
     }
 
+    function writeUserData(username, email, uid) {
+      const reference = ref(db, "users/" + uid);
+      set(reference, {
+        username: username,
+        email: email,
+        country: false,
+        bio: "My funny collection",
+        imageUrl: false,
+        following: [],
+        followers: [],
+        posts: [],
+        savedPosts: [],
+      });
+    }
+
     return ( 
-            <SubLoginForm onSubmit={handleSignup}
+            <SubLoginForm
                 onClick={(e) => e.stopPropagation()}
                 overlayHandler={props.overlayHandler}>
                     <form className="signup-content-wrapper">
                         <p className="signup-title">Sign up</p>
-                        {/* {error&&<p>{error}</p>}
-                        <p>This is an error!</p> */}
                         <input type="text" ref={usernameRef} className="input-field" placeholder="Username" required/>
                         <input type="email" ref={emailRef} className="input-field" placeholder="Email" required/>
                         <input type="password" ref={passwordRef} className="input-field" placeholder="Password" required/>
                         <input type="password" ref={confirmPasswordRef} className="input-field" placeholder="Confirm Password" required/>
                         <div className="login-button-wrapper">
-                            <button className="login-button" onClick={handleSignup} disabled={loading}>Sign up</button>
+                            <button className="login-button"  onClick={register} disabled={loading}>Sign up</button>
                         </div>
                     </form>
             </SubLoginForm>

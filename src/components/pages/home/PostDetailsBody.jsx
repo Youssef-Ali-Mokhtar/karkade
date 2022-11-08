@@ -1,8 +1,8 @@
 import { BiComment, BiUpvote, BiDownvote} from "react-icons/bi";
 import {BsBookmark} from "react-icons/bs";
 import { useState, useEffect } from "react";
-import PostComment from "./PostComment";
-import CommentsList from "./CommentsList";
+// import PostComment from "./PostComment";
+// import CommentsList from "./CommentsList";
 
 const PostDetailsBody = (props) => {
     const [smallIconSize, setSmallIconSize] = useState();
@@ -28,9 +28,9 @@ const PostDetailsBody = (props) => {
                             <BsBookmark className="post-icon" size={smallIconSize?15:20}/>
                         </div>
                     </div>
-                    <p className="post-details-title">{"A very interesting title indeed"}</p>
+                    <p className="post-details-title">{props.data.title}</p>
                 </div>
-                <img className="post-details-pic" alt="pic" src={"https://i.imgur.com/eTksRja.jpg"} />
+                {props.data.imageUrl&&<img className="post-details-pic" alt="pic" src={props.data.imageUrl} />}
                 <div className="post-status">
                     <div className="post-status-item">
                         <BiUpvote className="post-icon" size={smallIconSize?15:20}/>
@@ -45,7 +45,7 @@ const PostDetailsBody = (props) => {
                         <p>{"41"}</p>
                     </div>
                 </div>
-                <p className="comments-section-title">{props.data.comments.length} Comments</p>
+                {/* <p className="comments-section-title">{props.data.comments.length} Comments</p>
                 <div className="divider"/>
                 <div className="comments-section">
                     <PostComment/>
@@ -53,7 +53,7 @@ const PostDetailsBody = (props) => {
                         <CommentsList comments={props.data.comments}/>:
                         <p>Be the first to comment!</p>}
                     
-                </div>
+                </div> */}
     </div> );
 }
  

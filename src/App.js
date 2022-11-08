@@ -15,28 +15,38 @@ import Login from "./components/login/Login";
 import FloatingSearch from "./components/FloatingSearch";
 import PostDetails from "./components/pages/home/PostDetails";
 import useFetch from "./components/useFetch";
-import { getUserInfo } from "./firebase";
-//
+import useFetchById from "./components/useFetchById";
+import UpdateUserInfo from "./components/UpdateUserInfo";
+import spinningWheel from "./assets/loading.svg";
+
 function App() {
   const [floatingSearch, setFloatingSearch] = useState(false);
   const [themeMode, setThemeMode] = useState(localStorage.getItem("themeMode"));
   const [postOverlay, setPostOverlay] = useState(false);
+  const [overlayUpdateInfo, setOverlayUpdateInfo] = useState(false);
   const [mobileMode, setmobileMode] = useState(false);
   const [openSideNavbar, setOpenSideNavbar] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
   const r = document.querySelector(":root");
   const LIGHT = "light";
   const DARK = "dark";
   const fetchedData = useFetch(
-    "https://test-blog-bdc36-default-rtdb.firebaseio.com/posts.json"
+    "https://karkade-development-default-rtdb.firebaseio.com/posts.json"
   );
-  // console.log(getUserInfo().uid);
+
   useEffect(() => {
     if (localStorage.getItem("themeMode") === "dark") {
       setThemeMode(DARK);
     }
   }, []);
 
+  const userData = useFetchById(
+    `https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem(
+      "userId"
+    )}.json`
+  );
+  console.log("Haraamy");
   const changeThemeMode = () => {
     if (localStorage.getItem("themeMode") === DARK) {
       r.style.setProperty("--contentBackgroundTheme", "rgb(242,242,242)");
@@ -67,7 +77,6 @@ function App() {
     changeThemeMode();
     localStorage.setItem("themeMode", themeMode === LIGHT ? DARK : LIGHT);
   };
-  console.log(localStorage.getItem("useId"));
   useEffect(() => {
     if (window.innerWidth <= 1020) {
       setmobileMode(true);
@@ -101,6 +110,14 @@ function App() {
     }
   }, []);
 
+  // useEffect(() => {
+  //   const unsub = onAuthStateChanged(auth, (user) => {
+  //     setUser(user);
+  //     console.log("stateChanged:", user);
+  //   });
+  //   return unsub;
+  // }, []);
+
   return (
     <div className="App">
       {!loggedIn && <Login loggedInHandler={loggedInHandler} />}
@@ -110,6 +127,7 @@ function App() {
             <InputPost
               onClick={(e) => e.stopPropagation()}
               overlayHandler={setPostOverlay}
+              loadingHandler={setLoading}
             />
           </Overlay>
 
@@ -125,15 +143,21 @@ function App() {
               themeModeHandler={themeModeSwitchHandler}
               postOverlayHandler={setPostOverlay}
               loggedInHandler={loggedInHandler}
+              userInfo={userData}
             />
           )}
 
-          {/* <Overlay
+          <Overlay
             onClick={() => setOverlayUpdateInfo(false)}
             overlay={overlayUpdateInfo}
           >
-
-          </Overlay> */}
+            <UpdateUserInfo
+              onClick={(e) => e.stopPropagation()}
+              overlayHandler={setOverlayUpdateInfo}
+              userInfo={userData}
+              loadingHandler={setLoading}
+            />
+          </Overlay>
 
           <Overlay
             onClick={() => setOpenSideNavbar(false)}
@@ -148,6 +172,10 @@ function App() {
               onClick={(e) => e.stopPropagation()}
               overlayHandler={setFloatingSearch}
             />
+          </Overlay>
+
+          <Overlay overlay={loading}>
+            <img src={spinningWheel} className="spinning-wheel" alt="shit" />
           </Overlay>
 
           {mobileMode && (
@@ -184,9 +212,22 @@ function App() {
               />
               <Route exact path="/Connections" element={<Connections />} />
               <Route exact path="/Notifications" element={<Notifications />} />
-              <Route exact path="/Profile/*" element={<Profile />} />
+              <Route
+                exact
+                path="/Profile/*"
+                element={<Profile userInfo={userData} />}
+              />
               <Route exact path="/Bookmarks" element={<Bookmarks />} />
-              <Route exact path="/Settings" element={<Settings />} />
+              <Route
+                exact
+                path="/Settings"
+                element={
+                  <Settings
+                    userInfo={userData}
+                    setOverlayUpdateInfo={setOverlayUpdateInfo}
+                  />
+                }
+              />
               <Route
                 exact
                 path="/posts/:id"
