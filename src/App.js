@@ -119,15 +119,17 @@ function App() {
   // }, []);
 
   return (
+    <Router>
     <div className="App">
       {!loggedIn && <Login loggedInHandler={loggedInHandler} />}
       {loggedIn && (
-        <Router>
+        <>
           <Overlay onClick={() => setPostOverlay(false)} overlay={postOverlay}>
             <InputPost
               onClick={(e) => e.stopPropagation()}
               overlayHandler={setPostOverlay}
               loadingHandler={setLoading}
+              userInfo={userData}
             />
           </Overlay>
 
@@ -201,7 +203,7 @@ function App() {
             <Routes>
               <Route
                 exact
-                path="/"
+                path="/karkade/"
                 element={
                   <Home
                     data={fetchedData}
@@ -210,17 +212,17 @@ function App() {
                   />
                 }
               />
-              <Route exact path="/Connections" element={<Connections />} />
-              <Route exact path="/Notifications" element={<Notifications />} />
+              <Route exact path="/karkade/Connections" element={<Connections />} />
+              <Route exact path="/karkade/Notifications" element={<Notifications />} />
               <Route
                 exact
-                path="/Profile/*"
-                element={<Profile userInfo={userData} />}
+                path="/karkade/Profile/:profileId"
+                element={<Profile />}
               />
-              <Route exact path="/Bookmarks" element={<Bookmarks />} />
+              <Route exact path="/karkade/Bookmarks" element={<Bookmarks />} />
               <Route
                 exact
-                path="/Settings"
+                path="/karkade/Settings"
                 element={
                   <Settings
                     userInfo={userData}
@@ -230,14 +232,15 @@ function App() {
               />
               <Route
                 exact
-                path="/posts/:id"
+                path="/karkade/posts/:id"
                 element={<PostDetails data={fetchedData} />}
               />
             </Routes>
           </div>
-        </Router>
+        </>
       )}
     </div>
+    </Router>
   );
 }
 

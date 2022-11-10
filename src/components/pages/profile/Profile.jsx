@@ -3,13 +3,17 @@ import ProfilePosts from "./ProfilePosts";
 import ProfileFollowing from "./ProfileFollowing";
 import ProfileFollowers from "./ProfileFollowers";
 import profileImage from "../../../assets/empty-avatar.jpg";
-
+import { useParams } from "react-router-dom";
+import useFetchById from "../../useFetchById";
 const Profile = (props) => {
+    const { profileId } = useParams();
 
     const {data: userData,
         loadingMessage,
-        errorMessage} = props.userInfo;
-
+        errorMessage}  = useFetchById(
+        `https://karkade-development-default-rtdb.firebaseio.com/users/${profileId}.json`
+    );
+    
     const [list, setList] = useState("Posts");
     return ( <div className="profile">
         <div className="profile-info-section">

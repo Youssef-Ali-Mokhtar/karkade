@@ -45,10 +45,10 @@ const Navbar = (props) => {
     }, [])
     // console.log(userData.imageUrl);
     return ( <div className="navbar">
-            <Link to="/"><h2>Karkade</h2></Link>
-            <Link to="/" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/")}><AiOutlineHome className={`navbar-icons ${focusedIcon==="/"?'focused-icon':''}`} size={25}/></Link>
-            <Link to="/Connections" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/Connections")}><BsPeople className={`navbar-icons ${focusedIcon==="/Connections"?'focused-icon':''}`} size={25}/></Link>
-            <Link to="/Notifications" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/Notifications")}><AiOutlineBell className={`navbar-icons ${focusedIcon==="/Notifications"?'focused-icon':''}`} size={25}/></Link>
+            <Link to="/karkade/"><h2>Karkade</h2></Link>
+            <Link to="/karkade/" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/karkade/")}><AiOutlineHome className={`navbar-icons ${focusedIcon==="/karkade/"?'focused-icon':''}`} size={25}/></Link>
+            <Link to="/karkade/Connections" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/karkade/Connections")}><BsPeople className={`navbar-icons ${focusedIcon==="//karkadeConnections"?'focused-icon':''}`} size={25}/></Link>
+            <Link to="/karkade/Notifications" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/karkade/Notifications")}><AiOutlineBell className={`navbar-icons ${focusedIcon==="/karkade/Notifications"?'focused-icon':''}`} size={25}/></Link>
             <form>
                 <div className="search-container">
                     <AiOutlineSearch className="search-icon" size={18}/>
@@ -67,7 +67,7 @@ const Navbar = (props) => {
                 <div className="dropdown-menu"
                     style={{visibility:`${dropdown?"visible":"hidden"}`, opacity: `${dropdown?"1":"0"}`}}>
                         <div className="dropdown-profile-section">
-                            <Link to="/Profile" className="dropdown-profile-section-overlay" onClick={()=>setFocusedIcon("/Profile")}/>
+                            <Link to="/karkade/Profile" className="dropdown-profile-section-overlay" onClick={()=>setFocusedIcon("/karkade/Profile")}/>
                                 <div className="dropdown-profile-image-section">
                                 {userData&& <img alt="pic" src={userData.imageUrl?userData.imageUrl:profileImage} />}
                                 </div>
@@ -78,15 +78,15 @@ const Navbar = (props) => {
                         </div>
                         <hr className="divider"/>
                         <div className="dropdown-menu-items-section">
-                            <Link to="/Bookmarks" className="dropdown-menu-item" onClick={()=>setFocusedIcon("/Bookmarks")}>
+                            <Link to="/karkade/Bookmarks" className="dropdown-menu-item" onClick={()=>setFocusedIcon("/karkade/Bookmarks")}>
                                 <BsBookmarks className="dropdown-menu-item-icon" size={24}/>
                                 <p>Bookmarks</p>
                             </Link>
-                            <Link to="/Settings" className="dropdown-menu-item" onClick={()=>setFocusedIcon("/Settings")}>
+                            <Link to="/karkade/Settings" className="dropdown-menu-item" onClick={()=>setFocusedIcon("/karkade/Settings")}>
                                 <AiOutlineSetting className="dropdown-menu-item-icon" size={24}/>
                                 <p>Settings</p>
                             </Link>
-                            <Link to="/" className="dropdown-menu-item" style={{pointerEvents:`${loading?"none":"auto"}`}} 
+                            <Link to="/karkade/" className="dropdown-menu-item" style={{pointerEvents:`${loading?"none":"auto"}`}} 
                             onClick={ logout }>
                                 <MdLogout className="dropdown-menu-item-icon" size={24}/>
                                 <p>Logout</p>

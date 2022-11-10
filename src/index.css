@@ -566,6 +566,8 @@ a{
   font-size: 13px;
   font-weight: bold;
   cursor: pointer;
+  text-decoration: none;
+  color: var(--dropdownMenuColor);
   transition: font-size 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 

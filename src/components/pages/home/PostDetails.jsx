@@ -9,7 +9,7 @@ const PostDetails = () => {
     const {data: blogPosts,
         loadingMessage,
         errorMessage} = useFetchById(`https://karkade-development-default-rtdb.firebaseio.com/posts/${id}.json`);
-    console.log(id);
+        
     return ( <div className="post-details">
         {loadingMessage && <div>Loading...</div>}
         {blogPosts && <PostDetailsBody data={blogPosts}/>}

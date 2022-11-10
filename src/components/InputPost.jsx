@@ -10,6 +10,8 @@ const InputPost = (props) => {
     const title = useRef();
     const body = useRef();
 
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
     const handleImageChange=(e)=>{
         if(e.target.files.length!==0){
             setImage(e.target.files[0]);
@@ -22,8 +24,19 @@ const InputPost = (props) => {
     }
 
     const handleSubmit = (imageUrl) => {
-        
-        const post = {  title:title.current.value?title.current.value:false,
+        const d = new Date();
+        let minute = d.getMinutes();
+        let hour = d.getHours();
+        let day = d.getDate();
+        let month = d.getMonth();
+        let year = d.getFullYear();
+         
+
+        const post = {  author: props.userInfo.data.username,
+                        authorId: localStorage.getItem("userId"),
+                        authorImageUrl: props.userInfo.data.imageUrl,
+                        date: `${hour}:${minute} . ${day} ${months[month]} ${year}`,
+                        title:title.current.value?title.current.value:false,
                         body:body.current.value?body.current.value:false,
                         imageUrl:imageUrl?imageUrl:false};
 
