@@ -46,7 +46,7 @@ function App() {
       "userId"
     )}.json`
   );
-  console.log("Haraamy");
+  
   const changeThemeMode = () => {
     if (localStorage.getItem("themeMode") === DARK) {
       r.style.setProperty("--contentBackgroundTheme", "rgb(242,242,242)");
@@ -117,11 +117,11 @@ function App() {
   //   });
   //   return unsub;
   // }, []);
-
+  console.log();
   return (
     <Router>
     <div className="App">
-      {!loggedIn && <Login loggedInHandler={loggedInHandler} />}
+      {!loggedIn && <Login loggedInHandler={loggedInHandler} loadingHandler={setLoading}/>}
       {loggedIn && (
         <>
           <Overlay onClick={() => setPostOverlay(false)} overlay={postOverlay}>
@@ -139,6 +139,7 @@ function App() {
               themeMode={themeMode}
               openSideNavbarHandler={[openSideNavbar, setOpenSideNavbar]}
               loggedInHandler={loggedInHandler}
+              userInfo={userData}
             />
           ) : (
             <Navbar
