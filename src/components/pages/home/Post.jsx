@@ -2,6 +2,7 @@ import { BiComment, BiUpvote, BiDownvote} from "react-icons/bi";
 import {BsBookmark} from "react-icons/bs";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import profileImage from "../../../assets/empty-avatar.jpg";
 
 const Post = (props) => {
 
@@ -16,23 +17,20 @@ const Post = (props) => {
           });
     },[])
 
-
-    
-    console.log(props.post.authorId);
     return ( <div className="home-post">
                 <div className="post-text-content">
                     <div className="original-poster-section">
-                        <img alt="pic" src={props.post.authorImageUrl} />
+                        <Link to={`/karkade/Profile/${props.post.authorId}`}><img alt="pic" src={props.post.authorImageUrl?props.post.authorImageUrl:profileImage} /></Link>
                         <div className="original-poster-info-section">
                         
                             <Link className="original-poster-name" to={`/karkade/Profile/${props.post.authorId}`}>{props.post.author}</Link>
-                            <p className="original-poster-time">{props.post.date}</p>
+                            <Link className="original-poster-time" to={`/karkade/posts/${props.post.id}`}>{props.post.date}</Link>
                         </div>
                         <div className="bookmark">
                             <BsBookmark className="post-icon" size={smallIconSize?15:20}/>
                         </div>
                     </div>
-                    <p className="post-title">{props.post.title}</p>
+                    <Link className="post-title" to={`/karkade/posts/${props.post.id}`}>{props.post.title}</Link>
                 </div>
                 
                 <Link className="post-image-holder" to={`/karkade/posts/${props.post.id}`}>

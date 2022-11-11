@@ -12,19 +12,6 @@ const Login = (props) => {
     const emailRef = useRef();
     const passwordRef = useRef();
     
-    // async function handleLogin() {
-    //     console.log("LOGIN HANDLE");
-    //   setLoading(true);
-    //   try {
-    //     await login(emailRef.current.value, passwordRef.current.value);
-    //     props.loggedInHandler(true);
-    //   } catch {
-    //     alert("Error!");
-    //   }
-    //   console.log("LOGIN:", getUserInfo().uid);
-    //   localStorage.setItem("userId", getUserInfo().uid);
-    //   setLoading(false);
-    // }
     const login = async (e)=>{
         e.preventDefault();
         console.log("LOGIN");
@@ -41,7 +28,7 @@ const Login = (props) => {
 
     return ( <div className="login-page">
         <Overlay onClick={() => setPostOverlay(false)} overlay={postOverlay}>
-            {signupOrForgotPassword==="signup"?<SignupForm loggedInHandler={props.loggedInHandler} overlayHandler={setPostOverlay}/>:""}
+            {signupOrForgotPassword==="signup"?<SignupForm loadingHandler={props.loadingHandler} loggedInHandler={props.loggedInHandler} overlayHandler={setPostOverlay}/>:""}
             {signupOrForgotPassword==="forgotPassword"?<ForgotPassword overlayHandler={setPostOverlay}/>:""}
         </Overlay>
         <div className="login-form">

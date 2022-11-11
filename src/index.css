@@ -522,6 +522,8 @@ a{
   font-size:16px;
   font-weight: bold;
   padding-top:12px;
+  text-decoration: none;
+  color: var(--dropdownMenuColor);
   cursor: pointer;
   transition: font-size 0.3s ease-in-out, color 0.3s ease-in-out;
 }
@@ -575,6 +577,9 @@ a{
   font-weight:500;
   font-size: 13px;
   cursor: pointer;
+  padding:3px 0;
+  text-decoration: none;
+  color: var(--dropdownMenuColor);
   transition: font-size 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
@@ -1026,6 +1031,13 @@ a{
   font-size: 27px;
   font-weight: bold;
   color: var(--dropdownMenuColor);
+  transition: all 0.3s ease-in-out;
+}
+
+.profile-country{
+  font-size: 14px;
+  font-weight: bold;
+  color: #939598;
   transition: all 0.3s ease-in-out;
 }
 

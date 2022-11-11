@@ -67,7 +67,7 @@ const Navbar = (props) => {
                 <div className="dropdown-menu"
                     style={{visibility:`${dropdown?"visible":"hidden"}`, opacity: `${dropdown?"1":"0"}`}}>
                         <div className="dropdown-profile-section">
-                            <Link to="/karkade/Profile" className="dropdown-profile-section-overlay" onClick={()=>setFocusedIcon("/karkade/Profile")}/>
+                            <Link to={`/karkade/Profile/${localStorage.getItem("userId")}`} className="dropdown-profile-section-overlay" onClick={()=>setFocusedIcon("/karkade/Profile")}/>
                                 <div className="dropdown-profile-image-section">
                                 {userData&& <img alt="pic" src={userData.imageUrl?userData.imageUrl:profileImage} />}
                                 </div>

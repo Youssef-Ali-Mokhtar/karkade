@@ -17,7 +17,7 @@ const UpdateUserInfo = (props) => {
             e.target.value = null;
         }
     }
-    console.log("heey");
+
     const { data: userData } = props.userInfo;
 
     const handleCancelImage=(e)=>{
@@ -34,6 +34,8 @@ const UpdateUserInfo = (props) => {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(post),
+        }).then(()=>{
+            window.location.reload()
         })
     
     }

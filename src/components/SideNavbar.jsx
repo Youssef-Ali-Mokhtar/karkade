@@ -9,7 +9,10 @@ import { useState } from "react";
 
 const SideNavbar = (props) => {
     const [loading, setLoading] = useState(false);
-
+    
+    const {data: userData,
+        loadingMessage,
+        errorMessage} = props.userInfo;
 
     const logout = async ()=>{
         console.log("LOGOUT");
@@ -48,7 +51,7 @@ const SideNavbar = (props) => {
                     <Link to="/karkade/" onClick={()=>props.openSideNavbarHandler[1](false)}><h2 className="noselect">Karkade</h2></Link>
                 </div>
                 <div className="side-navbar-profile-section" onClick={()=>props.openSideNavbarHandler[1](false)}>
-                    <Link to="/karkade/Profile" className="dropdown-profile-section-overlay"></Link>
+                    <Link to={`/karkade/Profile/${localStorage.getItem("userId")}`} className="dropdown-profile-section-overlay"></Link>
                     <img  alt="pic" src={profileImage} />
                     <span>Youssef Mokhtar</span>
                 </div>

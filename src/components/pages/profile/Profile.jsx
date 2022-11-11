@@ -13,7 +13,7 @@ const Profile = (props) => {
         errorMessage}  = useFetchById(
         `https://karkade-development-default-rtdb.firebaseio.com/users/${profileId}.json`
     );
-    
+
     const [list, setList] = useState("Posts");
     return ( <div className="profile">
         <div className="profile-info-section">
@@ -21,7 +21,8 @@ const Profile = (props) => {
             {errorMessage && <p className="profile-name">{ errorMessage }</p>}
             {userData && <div className="profile-info">
                 <img alt="pic" src={userData.imageUrl?userData.imageUrl:profileImage} />
-                <p className="profile-name">{ userData.username }</p>
+                <p className="profile-name">{ userData.username }</p> 
+                <p className="profile-country">{ userData.country }</p>
             </div>}
         </div>
         {userData && <p className="profile-motto">{userData.bio}</p>}

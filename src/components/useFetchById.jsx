@@ -20,7 +20,6 @@ const useFetchById = (url) => {
           setData(data);
           setLoadingMessage(false);
           setErrorMessage(null);
-          console.log(data);
         })
         .catch((err) => {
           setErrorMessage(err.message);

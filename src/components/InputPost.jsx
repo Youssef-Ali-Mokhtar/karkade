@@ -4,12 +4,13 @@ import { useState, useRef } from "react";
 import {MdCancel} from "react-icons/md";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 const InputPost = (props) => {
     const [image, setImage] = useState(null);
     const title = useRef();
     const body = useRef();
-
+    const navigate = useNavigate();
     const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
     const handleImageChange=(e)=>{
@@ -40,10 +41,13 @@ const InputPost = (props) => {
                         body:body.current.value?body.current.value:false,
                         imageUrl:imageUrl?imageUrl:false};
 
-        fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/.json`, {
+        fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts.json`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(post),
+        }).then(()=>{
+            navigate("/karkade/");
+            window.location.reload();
         })
     
     }

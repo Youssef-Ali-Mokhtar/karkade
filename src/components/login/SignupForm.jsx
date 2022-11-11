@@ -1,8 +1,7 @@
 import SubLoginForm from "../SubLoginForm";
 import { useRef, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../firebase";
-import { ref, set } from "firebase/database";
+import { auth } from "../../firebase";
 
 const SignupForm = (props) => {
     // const [error, setError] = useState('');
@@ -15,8 +14,10 @@ const SignupForm = (props) => {
 
     const register = async (e)=>{
       e.preventDefault();
-      console.log("SIGN UP");
+
       setLoading(true);
+      
+      // props.loadingHandler(true);
       if(passwordRef.current.value !== confirmPasswordRef.current.value){
           alert("Passwords don't match!");
             return;
@@ -34,19 +35,25 @@ const SignupForm = (props) => {
     }
 
     function writeUserData(username, email, uid) {
-      const reference = ref(db, "users/" + uid);
-      set(reference, {
-        username: username,
-        email: email,
-        country: false,
-        bio: "My funny collection",
-        imageUrl: false,
-        following: [],
-        followers: [],
-        posts: [],
-        savedPosts: [],
-      });
+        const user = {  username: username,
+                        email: email,
+                        country: false,
+                        bio: "My funny collection",
+                        imageUrl: false
+                    };
+
+        fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${uid}.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user),
+        }).then(()=>{
+          window.location.reload();
+        })
+
     }
+
+
+    
 
     return ( 
             <SubLoginForm
