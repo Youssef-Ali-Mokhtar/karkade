@@ -62,7 +62,6 @@ const Navbar = (props) => {
                 />
             <div ref={dropdownRef} onClick={()=>setDropdown(!dropdown)} className="dropdown">
 
-            {!userData&&<img  alt="pic" src={profileImage} className="noselect" />}
             {userData&&<img  alt="pic" src={userData.imageUrl?userData.imageUrl:profileImage} className="noselect" />}
                 <div className="dropdown-menu"
                     style={{visibility:`${dropdown?"visible":"hidden"}`, opacity: `${dropdown?"1":"0"}`}}>
@@ -72,7 +71,7 @@ const Navbar = (props) => {
                                 {userData&& <img alt="pic" src={userData.imageUrl?userData.imageUrl:profileImage} />}
                                 </div>
                                 <div className="dropdown-profile-name-section">
-                                    {userData && <span>{userData.username?userData.username:"No data"}</span>}
+                                    {userData && <span>{userData.username}</span>}
                                     <AiOutlineRight />
                                 </div>
                         </div>

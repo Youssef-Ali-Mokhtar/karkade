@@ -1,6 +1,8 @@
 import { BiComment, BiUpvote, BiDownvote} from "react-icons/bi";
 import {BsBookmark} from "react-icons/bs";
 import { useState, useEffect } from "react";
+import profileImage from "../../../assets/empty-avatar.jpg";
+import { Link } from "react-router-dom";
 // import PostComment from "./PostComment";
 // import CommentsList from "./CommentsList";
 
@@ -19,10 +21,14 @@ const PostDetailsBody = (props) => {
     return ( <div className="post-details-body">
                 <div className="post-text-content">
                     <div className="original-poster-section">
-                        <img alt="pic" src={"https://i.imgur.com/3hWUzZr.jpg"} />
+                        <Link to={`/karkade/Profile/${props.data.authorId}`}>
+                            <img alt="pic" src={props.data.authorImageUrl?props.data.authorImageUrl:profileImage} />
+                        </Link>
                         <div className="original-poster-info-section">
-                            <p className="original-poster-name">{"Youssef Ali Mokhtar"}</p>
-                            <p className="original-poster-time">{"28 sep 21"}</p>
+                            <Link to={`/karkade/Profile/${props.data.authorId}`}>
+                                <p className="original-poster-name">{props.data.author}</p>
+                            </Link>
+                            <p className="original-poster-time">{props.data.date}</p>
                         </div>
                         <div className="bookmark">
                             <BsBookmark className="post-icon" size={smallIconSize?15:20}/>

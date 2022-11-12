@@ -416,6 +416,12 @@ a{
   position: relative;
 }
 
+.side-navbar-profile-section img{
+  width:40px;
+  height:40px;
+  object-fit: cover;
+}
+
 .side-navbar-profile-section span{
   font-size: 18px;
   font-weight: bold;

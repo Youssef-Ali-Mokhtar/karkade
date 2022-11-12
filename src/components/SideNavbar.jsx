@@ -52,8 +52,9 @@ const SideNavbar = (props) => {
                 </div>
                 <div className="side-navbar-profile-section" onClick={()=>props.openSideNavbarHandler[1](false)}>
                     <Link to={`/karkade/Profile/${localStorage.getItem("userId")}`} className="dropdown-profile-section-overlay"></Link>
-                    <img  alt="pic" src={profileImage} />
-                    <span>Youssef Mokhtar</span>
+
+                    {userData&&<img  alt="pic" src={userData.imageUrl?userData.imageUrl:profileImage} className="noselect" />}
+                    <span>{userData.username}</span>
                 </div>
                 <hr className="divider"/>
                 <div className="side-navbar-items-section">
