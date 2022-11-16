@@ -213,12 +213,12 @@ function App() {
                   />
                 }
               />
-              <Route exact path="/karkade/Connections" element={<Connections />} />
+              <Route exact path="/karkade/Connections" element={<Connections user={userData}/>} />
               <Route exact path="/karkade/Notifications" element={<Notifications />} />
               <Route
                 exact
                 path="/karkade/Profile/:profileId"
-                element={<Profile />}
+                element={<Profile posts={fetchedData}/>}
               />
               <Route exact path="/karkade/Bookmarks" element={<Bookmarks />} />
               <Route

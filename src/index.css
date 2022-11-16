@@ -982,7 +982,7 @@ a{
   font-weight: bold;
   font-size: 14px;
   color:white;
-  border: none;
+  border: 1px solid rgb(46, 105, 255);
   padding: 5px 15px;
   border-radius: 50px;
   cursor: pointer;
@@ -996,6 +996,18 @@ a{
   background-color: rgb(26, 90, 255);
 }
 
+.follow-button-pressed{
+  background-color: var(--navbarBackgroundTheme);
+  border: 1px solid rgb(46, 105, 255);
+  color: rgb(46, 105, 255);
+}
+
+.follow-button-pressed:hover{
+  background-color: rgb(26, 90, 255);
+  border: 1px solid rgb(26, 90, 255);
+  color: white;
+}
+
 .friend-text{
   margin:3px 3px;
   font-size: 13px;
@@ -1007,15 +1019,28 @@ a{
 
 .profile{
   margin-top:70px;
-  width: fit-content;
+  width: 520px;
   height:fit-content
 }
 
+.profile-header-section{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .profile-info-section{
-  width: 520px;
+  width: fit-content;
   height:fit-content;
   display: flex;
   flex-direction: column;
+}
+
+.profile-follow-buton{
+  height: fit-content;
+  width: fit-content;
+  
 }
 
 .profile-info-section img{
@@ -1032,8 +1057,14 @@ a{
   padding:0px 8px;
 }
 
+.profile-text-info-wrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+
 .profile-name{
-  padding: 15px;
+  padding: 0px 0px 0px 15px;
   font-size: 27px;
   font-weight: bold;
   color: var(--dropdownMenuColor);
@@ -1041,6 +1072,7 @@ a{
 }
 
 .profile-country{
+  padding: 0px 0px 0px 15px;
   font-size: 14px;
   font-weight: bold;
   color: #939598;
@@ -1509,6 +1541,9 @@ a{
   .post-details-body{
     width:100%;
   }
+  .post-details{
+    width: 100%;
+  }
 }
 
 @media only screen and (max-width: 560px) {
@@ -1526,7 +1561,11 @@ a{
   }
   
   .follow-button{
-    font-size: 12px;
+    padding: 2px 6px;
+  }
+
+  .follow-button p{
+    font-size: 11px;
   }
   
   .profile{
@@ -1542,6 +1581,14 @@ a{
   .profile-name{
     font-size: 18px;
   }
+
+  .profile-country{
+    font-size: 10px;
+  }
+
+  /* .profile-follow-button-holder{
+    background-color: #636466;
+  } */
 
   .settings-title{
     padding-left: 5px;

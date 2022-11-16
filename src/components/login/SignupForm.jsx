@@ -35,7 +35,9 @@ const SignupForm = (props) => {
     }
 
     function writeUserData(username, email, uid) {
-        const user = {  username: username,
+        const user = {  
+                        userId: uid,
+                        username: username,
                         email: email,
                         country: false,
                         bio: "My funny collection",

@@ -1,21 +1,19 @@
-import useFetch from "../../useFetch";
 import List from "../../List";
 import Friend from "./Friend";
 
-const Connections = () => {
+const Connections = (props) => {
     const {
-        data: blogPosts,
+        data: user,
         loadingMessage,
         errorMessage,
-    } = useFetch(
-        "https://test-blog-bdc36-default-rtdb.firebaseio.com/posts.json"
-    );
+    } = props.user;
+
     return ( <div className="home">
         {loadingMessage && <div>Loading...</div>}
-        {blogPosts && 
+        {user && 
             <List>
-                {blogPosts.map((post)=>{
-                    return <Friend author={post.author} key={post.id}/>
+                {Object.keys(user.following).map((user)=>{
+                    return <Friend user={user} key={user}/>
                 })}
                 <p className="connections-title">Connections</p>
             </List>

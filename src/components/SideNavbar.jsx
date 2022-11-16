@@ -10,9 +10,7 @@ import { useState } from "react";
 const SideNavbar = (props) => {
     const [loading, setLoading] = useState(false);
     
-    const {data: userData,
-        loadingMessage,
-        errorMessage} = props.userInfo;
+    const {data: userData} = props.userInfo;
 
     const logout = async ()=>{
         console.log("LOGOUT");
@@ -27,23 +25,6 @@ const SideNavbar = (props) => {
         setLoading(false);
     }
     
-    // async function handleLogout() {
-    //     if(!navigator.onLine){
-    //         alert("No Internet Connection");
-    //         return;
-    //     }
-        
-    //     setLoading(true);
-    //     try {
-    //       await logout();
-    //       props.loggedInHandler(false);
-    //       props.openSideNavbarHandler[1](false);
-    //     } catch {
-    //       alert("Error!");
-    //     }
-    //     localStorage.setItem("userId", null);
-    //     setLoading(false);
-    // }
 
     return (<div style={{left:`${props.openSideNavbarHandler[0]?"0":"-240"}px`}} className="side-navbar">
                 <div className="side-navbar-logo-section">

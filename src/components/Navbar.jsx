@@ -15,9 +15,7 @@ const Navbar = (props) => {
     const [focusedIcon, setFocusedIcon] = useState(`${location.pathname}`);
     const dropdownRef = useRef();
 
-    const {data: userData,
-        loadingMessage,
-        errorMessage} = props.userInfo;
+    const {data: userData} = props.userInfo;
 
     const logout = async ()=>{
         console.log("LOGOUT");

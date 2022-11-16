@@ -31,7 +31,7 @@ const InputPost = (props) => {
         let day = d.getDate();
         let month = d.getMonth();
         let year = d.getFullYear();
-         
+        const postId = Math.floor(Math.random()*10000000000);
 
         const post = {  author: props.userInfo.data.username,
                         authorId: localStorage.getItem("userId"),
@@ -41,14 +41,31 @@ const InputPost = (props) => {
                         body:body.current.value?body.current.value:false,
                         imageUrl:imageUrl?imageUrl:false};
 
-        fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts.json`, {
-          method: "POST",
+        
+
+        fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${postId}.json`, {
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(post),
         }).then(()=>{
             navigate("/karkade/");
             window.location.reload();
         })
+
+        const userPost = {
+            [postId]: true
+        }
+
+        fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/posts.json`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userPost),
+          }).then(()=>{
+              navigate("/karkade/");
+              window.location.reload();
+          })
+
+
     
     }
 

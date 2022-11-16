@@ -3,8 +3,7 @@ import {BsBookmark} from "react-icons/bs";
 import { useState, useEffect } from "react";
 import profileImage from "../../../assets/empty-avatar.jpg";
 import { Link } from "react-router-dom";
-// import PostComment from "./PostComment";
-// import CommentsList from "./CommentsList";
+import useFetchById from "../../useFetchById";
 
 const PostDetailsBody = (props) => {
     const [smallIconSize, setSmallIconSize] = useState();
@@ -18,15 +17,20 @@ const PostDetailsBody = (props) => {
           });
     },[])
 
+    const {data: userData,
+        loadingMessage,
+        errorMessage} = useFetchById(`https://karkade-development-default-rtdb.firebaseio.com/users/${props.userData.authorId}.json`);
+
     return ( <div className="post-details-body">
                 <div className="post-text-content">
                     <div className="original-poster-section">
                         <Link to={`/karkade/Profile/${props.data.authorId}`}>
-                            <img alt="pic" src={props.data.authorImageUrl?props.data.authorImageUrl:profileImage} />
+                            {!userData?.imageUrl && <img src={profileImage} alt="profile_pic"/>}
+                            {userData?.imageUrl && <img src={userData.imageUrl?userData.imageUrl:profileImage} alt="profile_pic"/>}
                         </Link>
                         <div className="original-poster-info-section">
                             <Link to={`/karkade/Profile/${props.data.authorId}`}>
-                                <p className="original-poster-name">{props.data.author}</p>
+                                <p className="original-poster-name">{userData?.username}</p>
                             </Link>
                             <p className="original-poster-time">{props.data.date}</p>
                         </div>

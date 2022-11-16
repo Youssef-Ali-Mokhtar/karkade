@@ -1,3 +1,4 @@
+import { AiOutlineConsoleSql } from "react-icons/ai";
 import { useParams} from "react-router-dom";
 import useFetchById from "../../useFetchById";
 import PostDetailsBody from "./PostDetailsBody";
@@ -9,10 +10,11 @@ const PostDetails = () => {
     const {data: blogPosts,
         loadingMessage,
         errorMessage} = useFetchById(`https://karkade-development-default-rtdb.firebaseio.com/posts/${id}.json`);
+    
         
     return ( <div className="post-details">
         {loadingMessage && <div>Loading...</div>}
-        {blogPosts && <PostDetailsBody data={blogPosts}/>}
+        {blogPosts && <PostDetailsBody data={blogPosts} userData={blogPosts}/>}
         {errorMessage && <div>{errorMessage}</div>}
     </div> );
 }
