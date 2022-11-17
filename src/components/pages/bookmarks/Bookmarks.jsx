@@ -1,24 +1,31 @@
 import List from "../../List";
-import useFetch from "../../useFetch";
+import useFetchById from "../../useFetchById";
 import Post from "../home/Post";
-const Bookmarks = () => {
+const Bookmarks = (props) => {
 
     const {
         data: blogPosts,
+    } = props.posts;
+
+    const {
+        data: bookmarks,
         loadingMessage,
         errorMessage,
-    } = useFetch(
-        "https://test-blog-bdc36-default-rtdb.firebaseio.com/posts.json"
+    } = useFetchById(
+        `https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/bookmarks.json`
     );
+    console.log(Object.keys(bookmarks?bookmarks:""));
     return ( <div className="bookmarks">
         <p className="settings-title">Bookmarks</p>
         <div className="divider"></div>
         {loadingMessage && <div>Loading...</div>}
         {blogPosts && 
             <List>
-                {blogPosts.map((post)=>{
-                    return <Post post={post} key={post.id}/>
-                })}
+                {
+                    blogPosts.filter((post)=>Object.keys(bookmarks?bookmarks:"").includes(post.id)).map((post)=>{
+                        return <Post post={post} key={post.id}/>;
+                    })
+                }
             </List>
         }
         {errorMessage && <div>{errorMessage}</div>}

@@ -34,7 +34,7 @@ function App() {
   const fetchedData = useFetch(
     "https://karkade-development-default-rtdb.firebaseio.com/posts.json"
   );
-
+  
   useEffect(() => {
     if (localStorage.getItem("themeMode") === "dark") {
       setThemeMode(DARK);
@@ -220,7 +220,7 @@ function App() {
                 path="/karkade/Profile/:profileId"
                 element={<Profile posts={fetchedData}/>}
               />
-              <Route exact path="/karkade/Bookmarks" element={<Bookmarks />} />
+              <Route exact path="/karkade/Bookmarks" element={<Bookmarks posts={fetchedData}/>} />
               <Route
                 exact
                 path="/karkade/Settings"

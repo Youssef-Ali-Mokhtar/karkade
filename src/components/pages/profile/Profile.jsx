@@ -18,8 +18,6 @@ const Profile = (props) => {
         `https://karkade-development-default-rtdb.firebaseio.com/users/${profileId}.json`
     )
 
-    //        setFollow(userData?.followers?.localStorage.getItem("userId")?true:false);
-
     useEffect(()=>{
         setFollow(userData?.followers?.[(localStorage.getItem("userId"))]?true:false);
     },[userData])
@@ -74,6 +72,12 @@ const Profile = (props) => {
             <div className="profile-info-section">
                 {loadingMessage && <p className="profile-name">{ loadingMessage }</p>}
                 {errorMessage && <p className="profile-name">{ errorMessage }</p>}
+                {!userData&&<div className="profile-info">
+                    <img alt="pic" src={profileImage} />
+                    <div className="profile-text-info-wrapper">
+                        <p className="profile-name">{ "Loading..." }</p> 
+                    </div>
+                </div>}
                 {userData && <div className="profile-info">
                     <img alt="pic" src={userData.imageUrl?userData.imageUrl:profileImage} />
                     <div className="profile-text-info-wrapper">
@@ -89,6 +93,7 @@ const Profile = (props) => {
                 </div>
             }
         </div>
+        {!userData && <p className="profile-motto">{"Loading..."}</p>}
         {userData && <p className="profile-motto">{userData.bio}</p>}
         <div className="profile-navbar">
             <p onClick={()=>{setList("Posts")}}>Posts</p>

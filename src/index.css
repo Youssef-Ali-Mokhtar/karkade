@@ -417,8 +417,8 @@ a{
 }
 
 .side-navbar-profile-section img{
-  width:40px;
-  height:40px;
+  min-width:40px;
+  min-height:40px;
   object-fit: cover;
 }
 
@@ -571,6 +571,7 @@ a{
 }
 
 .original-poster-name{
+  width: fit-content;
   font-size: 13px;
   font-weight: bold;
   cursor: pointer;
@@ -580,6 +581,7 @@ a{
 }
 
 .original-poster-time{
+  width: fit-content;
   font-weight:500;
   font-size: 13px;
   cursor: pointer;

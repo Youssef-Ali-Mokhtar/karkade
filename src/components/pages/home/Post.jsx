@@ -1,12 +1,12 @@
 import { BiComment, BiUpvote, BiDownvote} from "react-icons/bi";
-import {BsBookmark} from "react-icons/bs";
+import {BsBookmark, BsFillBookmarkCheckFill} from "react-icons/bs";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import profileImage from "../../../assets/empty-avatar.jpg";
 import useFetchById from "../../useFetchById";
 
 const Post = (props) => {
-
+    const [bookmark, setBookmark] = useState(false);
     const [smallIconSize, setSmallIconSize] = useState();
     useEffect(()=>{
         window.addEventListener("resize", (event) => {
@@ -18,9 +18,42 @@ const Post = (props) => {
           });
     },[])
 
+    const {data: userData} = useFetchById(
+        `https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}.json`
+      );
+
+    useEffect(()=>{
+        setBookmark(userData?.bookmarks?.[props.post.id]?true:false);
+    },[userData, props.post.id])
+
+
+
     const userProfileData = useFetchById(
         `https://karkade-development-default-rtdb.firebaseio.com/users/${props.post.authorId}.json`
       );
+
+    const bookmarkHandler = ()=>{
+
+        const bookmarkPostId = {
+            [props.post.id]: true
+        }
+        console.log(localStorage.getItem("userId"), Object.keys(bookmarkPostId).toString());
+        if(!bookmark){
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/bookmarks.json`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bookmarkPostId),
+            }).then(()=>{
+                setBookmark(true);
+            })
+        }else{
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/bookmarks/${props.post.id}.json`, {
+                method: "DELETE"
+            }).then(()=>{
+                setBookmark(false);
+            })
+        }
+    }
 
     return ( <div className="home-post">
                 <div className="post-text-content">
@@ -31,14 +64,15 @@ const Post = (props) => {
                         </Link>
                         <div className="original-poster-info-section">
 
-                            <Link className="original-poster-name" to={`/karkade/Profile/${props.post.authorId}`}>
+                            <Link className="original-poster-name noselect" to={`/karkade/Profile/${props.post.authorId}`}>
                                 {!userProfileData.data && "Loading..."}
                                 {userProfileData.data && userProfileData.data.username}
                             </Link>
                             <Link className="original-poster-time" to={`/karkade/posts/${props.post.id}`}>{props.post.date}</Link>
                         </div>
-                        <div className="bookmark">
-                            <BsBookmark className="post-icon" size={smallIconSize?15:20}/>
+                        <div className="bookmark noselect" onClick={bookmarkHandler}>
+                            {!bookmark&&<BsBookmark  className="post-icon noselect" size={smallIconSize?15:20}/>}
+                            {bookmark&&<BsFillBookmarkCheckFill  className="post-icon noselect" size={smallIconSize?15:20}/>}
                         </div>
                     </div>
                     <Link className="post-title" to={`/karkade/posts/${props.post.id}`}>{props.post.title}</Link>

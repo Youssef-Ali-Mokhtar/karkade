@@ -31,12 +31,12 @@ const InputPost = (props) => {
         let day = d.getDate();
         let month = d.getMonth();
         let year = d.getFullYear();
-        const postId = Math.floor(Math.random()*10000000000);
+        const postId = Date.now();
 
         const post = {  author: props.userInfo.data.username,
                         authorId: localStorage.getItem("userId"),
                         authorImageUrl: props.userInfo.data.imageUrl,
-                        date: `${hour}:${minute} . ${day} ${months[month]} ${year}`,
+                        date: `${hour.length===1?`0${hour}`:hour}:${minute.length===1?`0${minute}`:minute} . ${day} ${months[month]} ${year}`,
                         title:title.current.value?title.current.value:false,
                         body:body.current.value?body.current.value:false,
                         imageUrl:imageUrl?imageUrl:false};

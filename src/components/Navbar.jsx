@@ -43,7 +43,7 @@ const Navbar = (props) => {
     }, [])
     // console.log(userData.imageUrl);
     return ( <div className="navbar">
-            <Link to="/karkade/"><h2>Karkade</h2></Link>
+            <Link to="/karkade/" ><h2>Karkade</h2></Link>
             <Link to="/karkade/" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/karkade/")}><AiOutlineHome className={`navbar-icons ${focusedIcon==="/karkade/"?'focused-icon':''}`} size={25}/></Link>
             <Link to="/karkade/Connections" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/karkade/Connections")}><BsPeople className={`navbar-icons ${focusedIcon==="//karkadeConnections"?'focused-icon':''}`} size={25}/></Link>
             <Link to="/karkade/Notifications" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/karkade/Notifications")}><AiOutlineBell className={`navbar-icons ${focusedIcon==="/karkade/Notifications"?'focused-icon':''}`} size={25}/></Link>
