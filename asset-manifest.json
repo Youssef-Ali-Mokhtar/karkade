@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/karkade/static/css/main.3accda1f.css",
-    "main.js": "/karkade/static/js/main.b4ed5c8c.js",
+    "main.js": "/karkade/static/js/main.96dae3a2.js",
     "static/media/maybe.jpg": "/karkade/static/media/maybe.aee3aa3be00b34532de4.jpg",
     "static/media/loading.svg": "/karkade/static/media/loading.22ffa5bb8b838b80fa53868bc346a73f.svg",
     "index.html": "/karkade/index.html",
     "main.3accda1f.css.map": "/karkade/static/css/main.3accda1f.css.map",
-    "main.b4ed5c8c.js.map": "/karkade/static/js/main.b4ed5c8c.js.map"
+    "main.96dae3a2.js.map": "/karkade/static/js/main.96dae3a2.js.map"
   },
   "entrypoints": [
     "static/css/main.3accda1f.css",
-    "static/js/main.b4ed5c8c.js"
+    "static/js/main.96dae3a2.js"
   ]
 }
