@@ -26,13 +26,12 @@ const InputPost = (props) => {
 
     const handleSubmit = (imageUrl) => {
         const d = new Date();
-        let minute = d.getMinutes();
-        let hour = d.getHours();
-        let day = d.getDate();
-        let month = d.getMonth();
-        let year = d.getFullYear();
+        let minute = d.getMinutes().toString();
+        let hour = d.getHours().toString();
+        let day = d.getDate().toString();
+        let month = d.getMonth().toString();
+        let year = d.getFullYear().toString();
         const postId = Date.now();
-
         const post = {  author: props.userInfo.data.username,
                         authorId: localStorage.getItem("userId"),
                         authorImageUrl: props.userInfo.data.imageUrl,
@@ -48,7 +47,7 @@ const InputPost = (props) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(post),
         }).then(()=>{
-            navigate("/karkade/");
+            navigate("/");
             window.location.reload();
         })
 
@@ -61,7 +60,7 @@ const InputPost = (props) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userPost),
           }).then(()=>{
-              navigate("/karkade/");
+              navigate("/");
               window.location.reload();
           })
 
@@ -106,46 +105,6 @@ const InputPost = (props) => {
 
 
       };
-
-    // const handleSubmitPost = ()=>{
-    //     if(image){
-    //         const imageRef = ref(storage, image.name);
-    //         uploadBytes(imageRef, image).then(()=>{
-    //             getDownloadURL(imageRef).then((url)=>{
-    //                 console.log("IT'S WORKING");
-    //                 setUrl(url);
-    //             }).catch((error)=>{
-    //                 console.log(error.message);
-    //             })
-    //             setImage(null);
-    //         }).catch((error)=>{
-    //             console.log(error.message);
-    //         })
-    //     }
-    //     console.log(url);
-    // }
-
-
-
-    // const handleSubmitPost = () => {
-    //     const imageRef = ref(storage, image.name);
-    //     uploadBytes(imageRef, image)
-    //       .then(() => {
-    //         getDownloadURL(imageRef)
-    //           .then((url) => {
-    //             setUrl(url);
-    //             console.log("WHERE URL:", url);
-    //           })
-    //           .catch((error) => {
-    //             console.log(error.message, "error getting the image url");
-    //           });
-    //         setImage(null);
-    //       })
-    //       .catch((error) => {
-    //         console.log(error.message);
-    //       });
-          
-    //   };
 
 
     return (

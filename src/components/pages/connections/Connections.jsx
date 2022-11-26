@@ -10,9 +10,9 @@ const Connections = (props) => {
 
     return ( <div className="home">
         {loadingMessage && <div>Loading...</div>}
-        {user && 
+        {user?.following && 
             <List>
-                {Object.keys(user.following).map((user)=>{
+                {Object.keys(user?.following).map((user)=>{
                     return <Friend user={user} key={user}/>
                 })}
                 <p className="connections-title">Connections</p>

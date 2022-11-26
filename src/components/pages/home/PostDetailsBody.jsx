@@ -1,12 +1,113 @@
 import { BiComment, BiUpvote, BiDownvote} from "react-icons/bi";
-import {BsBookmark} from "react-icons/bs";
+import {BsBookmark, BsFillBookmarkCheckFill} from "react-icons/bs";
 import { useState, useEffect } from "react";
 import profileImage from "../../../assets/empty-avatar.jpg";
 import { Link } from "react-router-dom";
 import useFetchById from "../../useFetchById";
+import PostComment from "./PostComment";
+import CommentsList from "./CommentsList";
 
 const PostDetailsBody = (props) => {
     const [smallIconSize, setSmallIconSize] = useState();
+    const [bookmark, setBookmark] = useState(false);
+    const [upvote, setUpvote] = useState(false);
+    const [upvoteNumber, setUpvoteNumber] = useState(0);
+    const [downvote, setDownvote] = useState(false);
+    const [downvoteNumber, setDownvoteNumber] = useState(0);
+
+    const {data: currentUserData} = useFetchById(
+        `https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}.json`
+      );
+
+    useEffect(()=>{
+        setBookmark(currentUserData?.bookmarks?.[props.postId]?true:false);
+        setUpvote(props.data?.upvotes?.[localStorage.getItem("userId")]?true:false);
+        setUpvoteNumber(props.data?.upvotes?Object.keys(props.data.upvotes).length:0);
+        setDownvote(props.data?.downvotes?.[localStorage.getItem("userId")]?true:false);
+        setDownvoteNumber(props.data?.downvotes?Object.keys(props.data.downvotes).length:0);
+    },[currentUserData, props])
+
+    const bookmarkHandler = ()=>{
+
+        const bookmarkPostId = {
+            [props.postId]: true
+        }
+
+        if(!bookmark){
+            setBookmark(true);
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/bookmarks.json`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bookmarkPostId),
+            })
+        }else{
+            setBookmark(false);
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/bookmarks/${props.postId}.json`, {
+                method: "DELETE"
+            })
+        }
+    }
+
+    const upvoteHandler = ()=>{
+        const upvoteUserId = {
+            [localStorage.getItem("userId")]: true
+        }
+        if(!upvote){
+            setUpvote(true);
+            setUpvoteNumber(prev=>prev+1);
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/upvotes.json`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(upvoteUserId),
+            })
+            if(downvote){
+                setDownvote(false);
+                setDownvoteNumber(prev=>prev-1);
+                fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/downvotes/${localStorage.getItem("userId")}.json`, {
+                    method: "DELETE"
+                })
+            }
+        }else{
+            setUpvote(false);
+            setUpvoteNumber(prev=>prev-1);
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/upvotes/${localStorage.getItem("userId")}.json`, {
+                method: "DELETE"
+            })
+            
+        }
+        
+    }
+
+    const downvoteHandler = ()=>{
+        const downvoteUserId = {
+            [localStorage.getItem("userId")]: true
+        }
+        if(!downvote){
+            setDownvote(true);
+            setDownvoteNumber(prev=>prev+1);
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/downvotes.json`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(downvoteUserId),
+            })
+            if(upvote){
+                setUpvote(false);
+                setUpvoteNumber(prev=>prev-1);
+                fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/upvotes/${localStorage.getItem("userId")}.json`, {
+                    method: "DELETE"
+                })
+            }
+        }else{
+            setDownvote(false);
+            setDownvoteNumber(prev=>prev-1);
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/downvotes/${localStorage.getItem("userId")}.json`, {
+                method: "DELETE"
+            })
+            
+        }
+        
+    }
+
     useEffect(()=>{
         window.addEventListener("resize", (event) => {
             if (window.innerWidth <= 330) {
@@ -17,53 +118,56 @@ const PostDetailsBody = (props) => {
           });
     },[])
 
-    const {data: userData,
-        loadingMessage,
-        errorMessage} = useFetchById(`https://karkade-development-default-rtdb.firebaseio.com/users/${props.userData.authorId}.json`);
+    const {data: userData} = useFetchById(`https://karkade-development-default-rtdb.firebaseio.com/users/${props.data.authorId}.json`);
 
     return ( <div className="post-details-body">
                 <div className="post-text-content">
                     <div className="original-poster-section">
-                        <Link to={`/karkade/Profile/${props.data.authorId}`}>
+                        <Link to={`/Profile/${props.data.authorId}`}>
                             {!userData?.imageUrl && <img src={profileImage} alt="profile_pic"/>}
                             {userData?.imageUrl && <img src={userData.imageUrl?userData.imageUrl:profileImage} alt="profile_pic"/>}
                         </Link>
                         <div className="original-poster-info-section">
-                            <Link to={`/karkade/Profile/${props.data.authorId}`}>
+                            <Link to={`/Profile/${props.data.authorId}`}>
                                 <p className="original-poster-name">{userData?.username}</p>
                             </Link>
                             <p className="original-poster-time">{props.data.date}</p>
                         </div>
-                        <div className="bookmark">
-                            <BsBookmark className="post-icon" size={smallIconSize?15:20}/>
+                        <div className="bookmark noselect" onClick={bookmarkHandler}>
+                            {!bookmark&&<BsBookmark  className="post-icon noselect" size={smallIconSize?15:20}/>}
+                            {bookmark&&<BsFillBookmarkCheckFill  className="post-icon noselect" size={smallIconSize?15:20}/>}
                         </div>
                     </div>
                     <p className="post-details-title">{props.data.title}</p>
+                    <p className="post-details-article">{props.data.body}</p>
                 </div>
                 {props.data.imageUrl&&<img className="post-details-pic" alt="pic" src={props.data.imageUrl} />}
                 <div className="post-status">
-                    <div className="post-status-item">
+                    <div className="post-status-item" onClick={upvoteHandler} style={{color:upvote?"#09f":""}}>
                         <BiUpvote className="post-icon" size={smallIconSize?15:20}/>
-                        <p>{"456"}</p>
+                        <p>{upvoteNumber}</p>
                     </div>
-                    <div className="post-status-item">
+                    <div className="post-status-item" onClick={downvoteHandler} style={{color:downvote?"#09f":""}}>
                         <BiDownvote className="post-icon" size={smallIconSize?15:20}/>
-                        <p>{"28"}</p>
+                        <p>{downvoteNumber}</p>
                     </div>
                     <div className="post-status-item">
                         <BiComment className="post-icon" size={smallIconSize?15:20}/>
-                        <p>{"41"}</p>
+                        {props?.data?.comments?<p>{Object.keys(props.data?.comments).length}</p>:<p>{"0"}</p>}
                     </div>
                 </div>
-                {/* <p className="comments-section-title">{props.data.comments.length} Comments</p>
+                <p className="comments-section-title">
+                    {props.data?.comments?(Object.keys(props.data?.comments).length>1?
+                                            `${Object.keys(props.data?.comments).length} Comments`:"1 Comment"):
+                                            `0 Comments`} 
+                </p>
                 <div className="divider"/>
                 <div className="comments-section">
-                    <PostComment/>
-                    {props.data.comments.length>0?
-                        <CommentsList comments={props.data.comments}/>:
+                    <PostComment postId={props.postId} userData={props.userData}/>
+                    {props.data?.comments?
+                        <CommentsList comments={Object.values(props.data.comments)} />:
                         <p>Be the first to comment!</p>}
-                    
-                </div> */}
+                </div>
     </div> );
 }
  

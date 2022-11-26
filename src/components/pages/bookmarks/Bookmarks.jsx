@@ -14,7 +14,7 @@ const Bookmarks = (props) => {
     } = useFetchById(
         `https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/bookmarks.json`
     );
-    console.log(Object.keys(bookmarks?bookmarks:""));
+
     return ( <div className="bookmarks">
         <p className="settings-title">Bookmarks</p>
         <div className="divider"></div>

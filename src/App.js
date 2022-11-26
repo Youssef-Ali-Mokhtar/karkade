@@ -119,7 +119,7 @@ function App() {
   // }, []);
   console.log();
   return (
-    <Router>
+    <Router basename="/karkade">
     <div className="App">
       {!loggedIn && <Login loggedInHandler={loggedInHandler} loadingHandler={setLoading}/>}
       {loggedIn && (
@@ -204,7 +204,7 @@ function App() {
             <Routes>
               <Route
                 exact
-                path="/karkade/"
+                path="/"
                 element={
                   <Home
                     data={fetchedData}
@@ -213,17 +213,17 @@ function App() {
                   />
                 }
               />
-              <Route exact path="/karkade/Connections" element={<Connections user={userData}/>} />
-              <Route exact path="/karkade/Notifications" element={<Notifications />} />
+              <Route exact path="/Connections" element={<Connections user={userData}/>} />
+              <Route exact path="/Notifications" element={<Notifications />} />
               <Route
                 exact
-                path="/karkade/Profile/:profileId"
+                path="/Profile/:profileId"
                 element={<Profile posts={fetchedData}/>}
               />
-              <Route exact path="/karkade/Bookmarks" element={<Bookmarks posts={fetchedData}/>} />
+              <Route exact path="/Bookmarks" element={<Bookmarks posts={fetchedData}/>} />
               <Route
                 exact
-                path="/karkade/Settings"
+                path="/Settings"
                 element={
                   <Settings
                     userInfo={userData}
@@ -233,8 +233,8 @@ function App() {
               />
               <Route
                 exact
-                path="/karkade/posts/:id"
-                element={<PostDetails data={fetchedData} />}
+                path="/posts/:id"
+                element={<PostDetails userData={userData.data}/>}
               />
             </Routes>
           </div>

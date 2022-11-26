@@ -104,8 +104,8 @@ const Profile = (props) => {
         <p className="current-profile-list">{list}</p>
         <div className="divider"/>
         {list==="Posts"?<ProfilePosts posts={postsData} profileId={profileId}/>:""}
-        {list==="Following"?<ProfileFollowing user={userData} profileId={profileId}/>:""}
-        {list==="Followers"?<ProfileFollowers user={userData} profileId={profileId}/>:""}
+        {list==="Following"?<ProfileFollowing profileId={profileId}/>:""}
+        {list==="Followers"?<ProfileFollowers profileId={profileId}/>:""}
     </div> );
 }
  

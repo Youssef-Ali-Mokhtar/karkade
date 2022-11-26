@@ -1,9 +1,9 @@
-import { AiOutlineConsoleSql } from "react-icons/ai";
+// import { AiOutlineConsoleSql } from "react-icons/ai";
 import { useParams} from "react-router-dom";
 import useFetchById from "../../useFetchById";
 import PostDetailsBody from "./PostDetailsBody";
 
-const PostDetails = () => {
+const PostDetails = (props) => {
     const { id } = useParams();
     // const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ const PostDetails = () => {
         
     return ( <div className="post-details">
         {loadingMessage && <div>Loading...</div>}
-        {blogPosts && <PostDetailsBody data={blogPosts} userData={blogPosts}/>}
+        {blogPosts && <PostDetailsBody data={blogPosts} userData={props.userData} postId={id}/>}
         {errorMessage && <div>{errorMessage}</div>}
     </div> );
 }

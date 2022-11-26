@@ -7,6 +7,11 @@ import useFetchById from "../../useFetchById";
 
 const Post = (props) => {
     const [bookmark, setBookmark] = useState(false);
+    const [upvote, setUpvote] = useState(false);
+    const [upvoteNumber, setUpvoteNumber] = useState(0);
+    const [downvote, setDownvote] = useState(false);
+    const [downvoteNumber, setDownvoteNumber] = useState(0);
+    
     const [smallIconSize, setSmallIconSize] = useState();
     useEffect(()=>{
         window.addEventListener("resize", (event) => {
@@ -18,83 +23,148 @@ const Post = (props) => {
           });
     },[])
 
+
     const {data: userData} = useFetchById(
         `https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}.json`
       );
 
+      const {data: postData} = useFetchById(
+        `https://karkade-development-default-rtdb.firebaseio.com/posts/${props.post.id}.json`
+      );
+    
     useEffect(()=>{
         setBookmark(userData?.bookmarks?.[props.post.id]?true:false);
-    },[userData, props.post.id])
+        setUpvote(postData?.upvotes?.[localStorage.getItem("userId")]?true:false);
+        setUpvoteNumber(postData?.upvotes?Object.keys(postData.upvotes).length:0);
+        setDownvote(postData?.downvotes?.[localStorage.getItem("userId")]?true:false);
+        setDownvoteNumber(postData?.downvotes?Object.keys(postData.downvotes).length:0);
+    },[userData, props.post, postData])
 
-
-
-    const userProfileData = useFetchById(
-        `https://karkade-development-default-rtdb.firebaseio.com/users/${props.post.authorId}.json`
-      );
 
     const bookmarkHandler = ()=>{
 
         const bookmarkPostId = {
             [props.post.id]: true
         }
-        console.log(localStorage.getItem("userId"), Object.keys(bookmarkPostId).toString());
         if(!bookmark){
+            setBookmark(true);
             fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/bookmarks.json`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(bookmarkPostId),
-            }).then(()=>{
-                setBookmark(true);
             })
         }else{
+            setBookmark(false);
             fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/bookmarks/${props.post.id}.json`, {
                 method: "DELETE"
-            }).then(()=>{
-                setBookmark(false);
             })
         }
     }
 
+    const upvoteHandler = ()=>{
+        const upvotePostId = {
+            [localStorage.getItem("userId")]: true
+        }
+        if(!upvote){
+            setUpvote(true);
+            setUpvoteNumber(prev=>prev+1);
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.post.id}/upvotes.json`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(upvotePostId),
+            })
+            if(downvote){
+                setDownvote(false);
+                setDownvoteNumber(prev=>prev-1);
+                fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.post.id}/downvotes/${localStorage.getItem("userId")}.json`, {
+                    method: "DELETE"
+                })
+            }
+        }else{
+            setUpvote(false);
+            setUpvoteNumber(prev=>prev-1);
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.post.id}/upvotes/${localStorage.getItem("userId")}.json`, {
+                method: "DELETE"
+            })
+            
+        }
+        
+    }
+
+    const downvoteHandler = ()=>{
+        const downvotePostId = {
+            [localStorage.getItem("userId")]: true
+        }
+        if(!downvote){
+            setDownvote(true);
+            setDownvoteNumber(prev=>prev+1);
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.post.id}/downvotes.json`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(downvotePostId),
+            })
+            if(upvote){
+                setUpvote(false);
+                setUpvoteNumber(prev=>prev-1);
+                fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.post.id}/upvotes/${localStorage.getItem("userId")}.json`, {
+                    method: "DELETE"
+                })
+            }
+        }else{
+            setDownvote(false);
+            setDownvoteNumber(prev=>prev-1);
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.post.id}/downvotes/${localStorage.getItem("userId")}.json`, {
+                method: "DELETE"
+            })
+            
+        }
+        
+    }
+
+
+    const userProfileData = useFetchById(
+        `https://karkade-development-default-rtdb.firebaseio.com/users/${props.post.authorId}.json`
+      );
     return ( <div className="home-post">
                 <div className="post-text-content">
                     <div className="original-poster-section">
-                        <Link to={`/karkade/Profile/${props.post.authorId}`}>
+                        <Link to={`/Profile/${props.post.authorId}`}>
                             {!userProfileData.data && <img src={profileImage} alt="profile_pic"/>}
                             {userProfileData.data && <img src={userProfileData.data.imageUrl?userProfileData.data.imageUrl:profileImage} alt="profile_pic"/>}
                         </Link>
                         <div className="original-poster-info-section">
 
-                            <Link className="original-poster-name noselect" to={`/karkade/Profile/${props.post.authorId}`}>
+                            <Link className="original-poster-name noselect" to={`/Profile/${props.post.authorId}`}>
                                 {!userProfileData.data && "Loading..."}
                                 {userProfileData.data && userProfileData.data.username}
                             </Link>
-                            <Link className="original-poster-time" to={`/karkade/posts/${props.post.id}`}>{props.post.date}</Link>
+                            <Link className="original-poster-time" to={`/posts/${props.post.id}`}>{props.post.date}</Link>
                         </div>
                         <div className="bookmark noselect" onClick={bookmarkHandler}>
                             {!bookmark&&<BsBookmark  className="post-icon noselect" size={smallIconSize?15:20}/>}
                             {bookmark&&<BsFillBookmarkCheckFill  className="post-icon noselect" size={smallIconSize?15:20}/>}
                         </div>
                     </div>
-                    <Link className="post-title" to={`/karkade/posts/${props.post.id}`}>{props.post.title}</Link>
+                    <Link className="post-title" to={`/posts/${props.post.id}`}>{props.post.title}</Link>
                 </div>
                 
-                <Link className="post-image-holder" to={`/karkade/posts/${props.post.id}`}>
+                <Link className="post-image-holder" to={`/posts/${props.post.id}`}>
                     {/* {props.image?<img alt="pic" src={props.image} />:""} */}
                     {props.post.imageUrl&&<img alt="pic" src={props.post.imageUrl} />}
                 </Link>
 
                 <div className="post-status">
-                    <div className="post-status-item">
+                    <div className="post-status-item" onClick={upvoteHandler} style={{color:upvote?"#09f":""}}>
                         <BiUpvote className="post-icon" size={smallIconSize?15:20}/>
-                        <p>{"456"}</p>
+                        <p>{upvoteNumber}</p>
                     </div>
-                    <div className="post-status-item">
+                    <div className="post-status-item" onClick={downvoteHandler} style={{color:downvote?"#09f":""}}>
                         <BiDownvote className="post-icon" size={smallIconSize?15:20}/>
-                        <p>{"28"}</p>
+                        <p>{downvoteNumber}</p>
                     </div>
                     <div className="post-status-item">
                         <BiComment className="post-icon" size={smallIconSize?15:20}/>
-                        <p>{"41"}</p>
+                        {props?.post?.comments?<p>{Object.keys(props.post?.comments).length}</p>:<p>{"0"}</p>}
                     </div>
                 </div>
     </div> );

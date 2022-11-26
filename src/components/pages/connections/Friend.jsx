@@ -58,7 +58,7 @@ const Friend = (props) => {
 
     return ( <div className="note">
         <div className="original-poster-section friend-space-between">
-            <Link to={`/karkade/Profile/${userData?.userId}`} className="friend-info-wrapper">
+            <Link to={`/Profile/${userData?.userId}`} className="friend-info-wrapper">
                 {!userData && <img src={profileImage} alt="profile_pic"/>}
                 {userData && <img src={userData?.imageUrl?userData.imageUrl:profileImage} alt="profile_pic"/>}
                 <p className="original-poster-name">{`${userData?.username?userData.username:"Loading..."}

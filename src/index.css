@@ -417,9 +417,13 @@ a{
 }
 
 .side-navbar-profile-section img{
+  width:40px;
+  height:40px;
   min-width:40px;
   min-height:40px;
-  object-fit: cover;
+  max-width:40px;
+  max-height:40px;
+  object-fit:cover;
 }
 
 .side-navbar-profile-section span{
@@ -531,6 +535,7 @@ a{
   text-decoration: none;
   color: var(--dropdownMenuColor);
   cursor: pointer;
+  word-break: normal;
   transition: font-size 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
@@ -605,6 +610,8 @@ a{
   align-items: center;
   padding: 5px 10px;
   cursor: pointer;
+  text-decoration: none;
+  color: var(--dropdownMenuColor);
   transition: color 0.3s ease-in-out;
 }
 
@@ -1281,8 +1288,17 @@ a{
   font-size:20px;
   font-weight: bold;
   padding-top:12px;
+  word-break: normal;
   transition: font-size 0.3s ease-in-out, color 0.3s ease-in-out;
 }
+
+.post-details-article{
+  font-size:14px;
+  padding:12px;
+  /* word-break: normal; */
+  transition: font-size 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
 
 .post-details-pic{
   width: 100%;
@@ -1293,6 +1309,7 @@ a{
 .comments-section{
   width: 100%;
   height:fit-content;
+  margin-bottom: 10px;
 }
 
 .post-comment{
@@ -1327,6 +1344,13 @@ a{
   width: 100%;
   display: flex;
   align-items: center;
+}
+
+.image-and-form-wrapper img{
+  max-width: 36px;
+  max-height:36px;
+  min-width: 36px;
+  min-height:36px;
 }
 
 .post-comment textarea{
@@ -1389,10 +1413,12 @@ a{
   display: flex;
   flex-direction: column;
   margin-left: 5px;
+  width: 100%;
+  /* word-break: break-all; */
 }
 
 .comment img{
-  min-width: 36px;
+  width: 36px;
   height: 36px;
   transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
   border-radius: 50%;
@@ -1402,16 +1428,24 @@ a{
 }
 
 .comment-author{
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   color:var(--dropdownMenuColor);
   margin-bottom: 5px;
 }
 
 .comment-text{
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   color:var(--hoverTextTheme);
+  overflow-wrap: break-word;
+  width: 100%;
+}
+
+.comment-date{
+  font-size: 11px;
+  color:grey;
+  font-weight: 500;
 }
 
 .update-profile-info{
