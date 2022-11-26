@@ -117,7 +117,7 @@ function App() {
   //   });
   //   return unsub;
   // }, []);
-  console.log();
+
   return (
     <Router basename="/karkade">
     <div className="App">

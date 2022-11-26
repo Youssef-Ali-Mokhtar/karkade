@@ -29,7 +29,7 @@ const SignupForm = (props) => {
         props.overlayHandler(false);
         props.loggedInHandler(true);
       }catch(error){
-        console.log(error.message);
+        alert(error.message);
       }
       setLoading(false);
     }
@@ -53,9 +53,6 @@ const SignupForm = (props) => {
         })
 
     }
-
-
-    
 
     return ( 
             <SubLoginForm

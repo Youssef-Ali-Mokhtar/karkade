@@ -14,14 +14,13 @@ const Login = (props) => {
     
     const login = async (e)=>{
         e.preventDefault();
-        console.log("LOGIN");
         setLoading(true);
         try{
           const user = await signInWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value);
           props.loggedInHandler(true);
           localStorage.setItem("userId", user.user.uid);
         }catch(error){
-          console.log(error.message);
+          alert(error.message);
         }
         setLoading(false);
       }
@@ -36,18 +35,11 @@ const Login = (props) => {
             <div className="login-motto">A place to enjoy while it lasts</div>
             <p className="login-title">Login</p>
             <div className="login-input-section">
-                <div className="social-media-login">
-                    <div className="google">Google</div>
-                    <div className="google">Facebook</div>
-                    <p className="signup-with-email" onClick={()=>{
+                <div className="email-login">                
+                <p className="signup-with-email" onClick={()=>{
                         setPostOverlay(true);
                         setSignupOrForgotPassword("signup");
                     }}>Sign up with email</p>
-                </div>
-
-                <div className="login-divider"></div>
-                
-                <div className="email-login">
                     <form className="email-login-form">
                         <input type="email" ref={emailRef} className="input-field" placeholder="Your email"/>
                         <input type="password" ref={passwordRef} className="input-field" placeholder="Your password"/>
@@ -56,10 +48,10 @@ const Login = (props) => {
                 </div>
             </div>
 
-            <p className="forgot-password" onClick={()=>{
+            {/* <p className="forgot-password" onClick={()=>{
                         setPostOverlay(true);
                         setSignupOrForgotPassword("forgotPassword");
-                    }}>Forgot password?</p>
+                    }}>Forgot password?</p> */}
         </div>
     </div> );
 }

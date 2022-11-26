@@ -15,15 +15,16 @@ const PostComment = (props) => {
         let day = d.getDate().toString();
         let month = d.getMonth().toString();
         let year = d.getFullYear().toString();
-        const postId = Date.now();
+        const commentId = Date.now();
 
         console.log(comment.current.value);
         const commentPost = {
+            commentId: commentId,
             comment: comment.current.value,
             commentorId: localStorage.getItem("userId"),
             date: `${hour.length===1?`0${hour}`:hour}:${minute.length===1?`0${minute}`:minute} . ${day} ${months[month]} ${year}`
         }
-        fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/comments/${postId}.json`, {
+        fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/comments/${commentId}.json`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(commentPost),
@@ -40,7 +41,7 @@ const PostComment = (props) => {
                 <img alt="pic" src={props.userData.imageUrl} />
                 <textarea ref={comment} type="text" maxLength={500}/>
             </div>
-                
+
             <button onClick={(e)=>{e.preventDefault(); addCommentHandler();}}>Add comment</button>
         </form>
     </div> );

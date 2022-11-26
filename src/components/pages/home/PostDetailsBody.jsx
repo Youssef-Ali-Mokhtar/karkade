@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import useFetchById from "../../useFetchById";
 import PostComment from "./PostComment";
 import CommentsList from "./CommentsList";
+import { AiOutlineDelete } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 const PostDetailsBody = (props) => {
     const [smallIconSize, setSmallIconSize] = useState();
@@ -15,34 +17,35 @@ const PostDetailsBody = (props) => {
     const [downvote, setDownvote] = useState(false);
     const [downvoteNumber, setDownvoteNumber] = useState(0);
 
-    const {data: currentUserData} = useFetchById(
-        `https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}.json`
-      );
+    const navigate = useNavigate();
+    // const {data: currentUserData} = useFetchById(
+    //     `https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}.json`
+    //   );
 
     useEffect(()=>{
-        setBookmark(currentUserData?.bookmarks?.[props.postId]?true:false);
+        setBookmark(props.data?.bookmarks?.[props.postId]?true:false);
         setUpvote(props.data?.upvotes?.[localStorage.getItem("userId")]?true:false);
         setUpvoteNumber(props.data?.upvotes?Object.keys(props.data.upvotes).length:0);
         setDownvote(props.data?.downvotes?.[localStorage.getItem("userId")]?true:false);
         setDownvoteNumber(props.data?.downvotes?Object.keys(props.data.downvotes).length:0);
-    },[currentUserData, props])
+    },[props])
 
     const bookmarkHandler = ()=>{
 
-        const bookmarkPostId = {
-            [props.postId]: true
+        const bookmarkUserId = {
+            [localStorage.getItem("userId")]: true
         }
 
         if(!bookmark){
             setBookmark(true);
-            fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/bookmarks.json`, {
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/bookmarks.json`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(bookmarkPostId),
+                body: JSON.stringify(bookmarkUserId),
             })
         }else{
             setBookmark(false);
-            fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/bookmarks/${props.postId}.json`, {
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/bookmarks/${localStorage.getItem("userId")}.json`, {
                 method: "DELETE"
             })
         }
@@ -108,6 +111,22 @@ const PostDetailsBody = (props) => {
         
     }
 
+    const deletePost = ()=>{
+        const deletePost = window.confirm("Are you sure you want to delete this post?");
+        if(deletePost){
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}.json`, {
+                method: "DELETE"
+            }).then(()=>{
+                fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/posts/${props.postId}.json`, {
+                    method: "DELETE"
+                }).then(()=>{
+                    navigate("/");
+                    window.location.reload();
+                })
+            })
+        }
+    }
+
     useEffect(()=>{
         window.addEventListener("resize", (event) => {
             if (window.innerWidth <= 330) {
@@ -142,18 +161,23 @@ const PostDetailsBody = (props) => {
                     <p className="post-details-article">{props.data.body}</p>
                 </div>
                 {props.data.imageUrl&&<img className="post-details-pic" alt="pic" src={props.data.imageUrl} />}
-                <div className="post-status">
-                    <div className="post-status-item" onClick={upvoteHandler} style={{color:upvote?"#09f":""}}>
-                        <BiUpvote className="post-icon" size={smallIconSize?15:20}/>
-                        <p>{upvoteNumber}</p>
+                <div className="post-status-and-delete">
+                    <div className="post-status">
+                        <div className="post-status-item" onClick={upvoteHandler} style={{color:upvote?"#09f":"var(--dropdownMenuColor)"}}>
+                            <BiUpvote className="post-icon" size={smallIconSize?15:20}/>
+                            <p>{upvoteNumber}</p>
+                        </div>
+                        <div className="post-status-item" onClick={downvoteHandler} style={{color:downvote?"#09f":"var(--dropdownMenuColor)"}}>
+                            <BiDownvote className="post-icon" size={smallIconSize?15:20}/>
+                            <p>{downvoteNumber}</p>
+                        </div>
+                        <div className="post-status-item">
+                            <BiComment className="post-icon" size={smallIconSize?15:20}/>
+                            {props?.data?.comments?<p>{Object.keys(props.data?.comments).length}</p>:<p>{"0"}</p>}
+                        </div>
                     </div>
-                    <div className="post-status-item" onClick={downvoteHandler} style={{color:downvote?"#09f":""}}>
-                        <BiDownvote className="post-icon" size={smallIconSize?15:20}/>
-                        <p>{downvoteNumber}</p>
-                    </div>
-                    <div className="post-status-item">
-                        <BiComment className="post-icon" size={smallIconSize?15:20}/>
-                        {props?.data?.comments?<p>{Object.keys(props.data?.comments).length}</p>:<p>{"0"}</p>}
+                    <div className="post-status-item" >
+                        {props.data.authorId===localStorage.getItem("userId")?<AiOutlineDelete className="post-icon" onClick={deletePost} size={smallIconSize?15:20}/>:""}
                     </div>
                 </div>
                 <p className="comments-section-title">
@@ -165,7 +189,7 @@ const PostDetailsBody = (props) => {
                 <div className="comments-section">
                     <PostComment postId={props.postId} userData={props.userData}/>
                     {props.data?.comments?
-                        <CommentsList comments={Object.values(props.data.comments)} />:
+                        <CommentsList comments={Object.values(props.data.comments)}  postId={props.postId}/>:
                         <p>Be the first to comment!</p>}
                 </div>
     </div> );
