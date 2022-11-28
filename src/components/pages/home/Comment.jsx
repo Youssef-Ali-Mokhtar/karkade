@@ -7,13 +7,17 @@ const Comment = (props) => {
         `https://karkade-development-default-rtdb.firebaseio.com/users/${props.comment.commentorId}.json`
       );
 
-      const deleteComment = ()=>{
+    const deleteComment = ()=>{
         const deleteComment = window.confirm("Are you sure you want to delete this comment?");
         if(deleteComment){
             fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/comments/${props.comment.commentId}.json`, {
                 method: "DELETE"
             }).then(()=>{
-                window.location.reload();
+                fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${props.comment.postPoster}/notifications/${props.comment.commentId+"n"}.json`, {
+                    method: "DELETE"
+                }).then(()=>{
+                     window.location.reload();
+                })
             })
         }
     }

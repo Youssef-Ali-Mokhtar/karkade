@@ -26,6 +26,26 @@ const Profile = (props) => {
 
 
     const followHandler = ()=>{
+        const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        const d = new Date();
+        let minute = d.getMinutes().toString();
+        let hour = d.getHours().toString();
+        let day = d.getDate().toString();
+        let month = d.getMonth().toString();
+        let year = d.getFullYear().toString();
+        const notificationId = Date.now()+"n";
+
+        const notificationPost = {
+            notificationId: notificationId,
+            type:"follow",
+            sender: localStorage.getItem("userId"),
+            receiver:profileId,
+            message: "Followed you",
+            target: `/profile/${localStorage.getItem("userId")}`,
+            checked: false,
+            date: `${hour.length===1?`0${hour}`:hour}:${minute.length===1?`0${minute}`:minute} . ${day} ${months[month]} ${year}`
+        }
+
         const follower = {
             [localStorage.getItem("userId")]: true
         }
@@ -34,38 +54,41 @@ const Profile = (props) => {
             [profileId]: true
         }
 
-        console.log();
         if(!follow){
+            setFollow(true)
             fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${profileId}/followers.json`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(follower),
-            }).then(()=>{
-                setFollow(true);
             })
 
             fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/following.json`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(following),
-            }).then(()=>{
-                setFollow(true);
+            })
+
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${profileId}/notifications/${notificationId}.json`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(notificationPost),
             })
         }else{
+            setFollow(false)
             fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${profileId}/followers/${localStorage.getItem("userId")}.json`, {
                 method: "DELETE"
-            }).then(()=>{
-                setFollow(false);
             })
 
             fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/following/${profileId}.json`, {
                 method: "DELETE"
-            }).then(()=>{
-                setFollow(false);
             })
+
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${profileId}/notifications/${notificationId}.json`, {
+                method: "DELETE"
+            })
+
         }
     }
-
     
     return ( <div className="profile">
         <div className="profile-header-section">

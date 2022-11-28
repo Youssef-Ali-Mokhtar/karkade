@@ -1,24 +1,43 @@
 import useFetch from "../../useFetch";
 import List from "../../List";
 import Note from "./Note";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const Notifications = () => {
+    const [uncheckedNotifications, setUncheckedNotifications] = useState(0);
     const {
-        data: blogPosts,
+        data: note,
         loadingMessage,
         errorMessage,
     } = useFetch(
-        "https://test-blog-bdc36-default-rtdb.firebaseio.com/posts.json"
+        `https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem("userId")}/notifications.json`
     );
+
+    useEffect(()=>{
+        const countUncheckedNotifications = ()=>{
+            let countNotifications = 0;
+            if(note){
+                for(let i = 0;i<note.length;i++){
+                    if(!note[i].checked){
+                        countNotifications++;
+                    }
+                }
+            }
+            return countNotifications;
+        }
+        setUncheckedNotifications(countUncheckedNotifications());
+    },[uncheckedNotifications, note])
+    
     return ( <div className="home">
         {loadingMessage && <div>Loading...</div>}
-        {blogPosts && 
+        {note && 
 
                 <List>
-                    {blogPosts.map((post)=>{
-                        return <Note author={post.author} key={post.id}/>
+                    {note.map((notePost)=>{
+                        return <Note unCheckedNotificationsHandler={setUncheckedNotifications} notePost={notePost} key={notePost.notificationId}/>
                     })}
-                    <p className="notifications-title">Notifications</p>
+                    <p className="notifications-title">{uncheckedNotifications} Unchecked Notifications</p>
                 </List>
         }
         {errorMessage && <div>{errorMessage}</div>}

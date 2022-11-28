@@ -13,14 +13,13 @@ const SideNavbar = (props) => {
     const {data: userData} = props.userInfo;
 
     const logout = async ()=>{
-        console.log("LOGOUT");
         setLoading(true);
         try{
             await signOut(auth);
             props.loggedInHandler(false);
             localStorage.setItem("userId","");
         }catch(error){
-            console.log(error.message);
+            alert(error.message);
         }
         setLoading(false);
     }

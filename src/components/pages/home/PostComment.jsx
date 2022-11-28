@@ -3,8 +3,9 @@ import { useRef } from "react";
 const PostComment = (props) => {
     const comment = useRef();
     const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    console.log();
+
     const addCommentHandler=()=>{
+
         if(!comment.current.value){
             return;
         }
@@ -17,19 +18,42 @@ const PostComment = (props) => {
         let year = d.getFullYear().toString();
         const commentId = Date.now();
 
-        console.log(comment.current.value);
         const commentPost = {
+            postPoster:props.post.authorId,
+            postId:props.postId,
             commentId: commentId,
             comment: comment.current.value,
             commentorId: localStorage.getItem("userId"),
             date: `${hour.length===1?`0${hour}`:hour}:${minute.length===1?`0${minute}`:minute} . ${day} ${months[month]} ${year}`
         }
+
+        const notificationPost = {
+            notificationId: commentId+"n",
+            type:"comment",
+            sender: localStorage.getItem("userId"),
+            receiver:props.post.authorId,
+            message: "commented: "+comment.current.value,
+            target: `/posts/${props.postId}`,
+            checked: false,
+            date: `${hour.length===1?`0${hour}`:hour}:${minute.length===1?`0${minute}`:minute} . ${day} ${months[month]} ${year}`
+        }
+
         fetch(`https://karkade-development-default-rtdb.firebaseio.com/posts/${props.postId}/comments/${commentId}.json`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(commentPost),
         }).then(()=>{
-            window.location.reload();
+            if(props.post.authorId !== localStorage.getItem("userId")){
+                fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${props.post.authorId}/notifications/${commentId+"n"}.json`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(notificationPost),
+                }).then((e)=>{
+                    window.location.reload();
+                })
+            }else{
+                window.location.reload();
+            }
         })
         comment.current.value="";
     }

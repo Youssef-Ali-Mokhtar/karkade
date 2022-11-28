@@ -77,7 +77,6 @@ const InputPost = (props) => {
             .then(() => {
                 getDownloadURL(imageRef)
                 .then((url) => {
-                    console.log("IMAGE WORKING");
                     handleSubmit(url);
                 })
                 .catch((error) => {

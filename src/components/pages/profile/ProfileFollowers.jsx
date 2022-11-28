@@ -12,7 +12,6 @@ const ProfileFollowers = (props) => {
         <List>
           {userData?.followers?
               Object.keys(userData.followers).map((user)=>{
-                console.log(user);
                   return <Friend user={user} key={user}/>
               }):
               "No followers"

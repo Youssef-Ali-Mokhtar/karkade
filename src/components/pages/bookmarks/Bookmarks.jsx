@@ -19,7 +19,6 @@ const Bookmarks = (props) => {
             <List>
                 {
                     blogPosts.filter((post)=>Object.keys(post?.bookmarks?post.bookmarks:"").includes(localStorage.getItem("userId"))).map((post)=>{
-                        console.log(post);
                         return <Post post={post} key={post.id}/>;
                     })
                 }

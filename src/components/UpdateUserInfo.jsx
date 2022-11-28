@@ -13,7 +13,6 @@ const UpdateUserInfo = (props) => {
     const handleImageChange=(e)=>{
         if(e.target.files.length!==0){
             setImage(e.target.files[0]);
-            console.log("WHERE IMAGE?");
             e.target.value = null;
         }
     }
@@ -49,7 +48,6 @@ const UpdateUserInfo = (props) => {
             .then(() => {
                 getDownloadURL(imageRef)
                 .then((url) => {
-                    console.log("IMAGE WORKING");
                     handleSubmit(url);
                 })
                 .catch((error) => {

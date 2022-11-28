@@ -12,20 +12,20 @@ const Navbar = (props) => {
     const location = useLocation();
     const [loading, setLoading] = useState(false);
     const [dropdown, setDropdown] = useState(false);
-    
     const [focusedIcon, setFocusedIcon] = useState(`${location.pathname}`);
     const dropdownRef = useRef();
     const {data: userData} = props.userInfo;
 
+    
+
     const logout = async ()=>{
-        console.log("LOGOUT");
         setLoading(true);
         try{
             await signOut(auth);
             props.loggedInHandler(false);
             localStorage.setItem("userId","");
         }catch(error){
-            console.log(error.message);
+            alert(error.message);
         }
         setLoading(false);
     }
@@ -41,12 +41,14 @@ const Navbar = (props) => {
             document.body.removeEventListener("click", closeDropdown);
         }
     }, [])
-    // console.log(userData.imageUrl);
+
     return ( <div className="navbar">
             <Link to="/" onClick={()=>{navigate("/"); window.location.reload();}}><h2>Karkade</h2></Link>
             <Link to="/" className="navbar-icons-wrapper" onClick={()=>{setFocusedIcon("/");}}><AiOutlineHome className={`navbar-icons ${focusedIcon==="/"?'focused-icon':''}`} size={25}/></Link>
             <Link to="/Connections" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/Connections")}><BsPeople className={`navbar-icons ${focusedIcon==="/Connections"?'focused-icon':''}`} size={25}/></Link>
-            <Link to="/Notifications" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/Notifications")}><AiOutlineBell className={`navbar-icons ${focusedIcon==="/Notifications"?'focused-icon':''}`} size={25}/></Link>
+            <Link to="/Notifications" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/Notifications")}>
+                <AiOutlineBell className={`navbar-icons ${focusedIcon==="/Notifications"?'focused-icon':''}`} size={25}/>
+            </Link>
             <form>
                 <div className="search-container">
                     <AiOutlineSearch className="search-icon" size={18}/>

@@ -20,6 +20,7 @@ import UpdateUserInfo from "./components/UpdateUserInfo";
 import spinningWheel from "./assets/loading.svg";
 
 function App() {
+  const [notificationsNumberAlert, setNotificationsNumberAlert] = useState(0);
   const [floatingSearch, setFloatingSearch] = useState(false);
   const [themeMode, setThemeMode] = useState(localStorage.getItem("themeMode"));
   const [postOverlay, setPostOverlay] = useState(false);
@@ -35,11 +36,14 @@ function App() {
     "https://karkade-development-default-rtdb.firebaseio.com/posts.json"
   );
   
+
+
   useEffect(() => {
     if (localStorage.getItem("themeMode") === "dark") {
       setThemeMode(DARK);
     }
   }, []);
+
 
   const userData = useFetchById(
     `https://karkade-development-default-rtdb.firebaseio.com/users/${localStorage.getItem(
@@ -96,7 +100,6 @@ function App() {
   }, []);
 
   const loggedInHandler = (state) => {
-    console.log("pressed!");
     setLoggedIn(state);
     localStorage.setItem("loggedIn", state);
   };
@@ -109,14 +112,6 @@ function App() {
       setLoggedIn(false);
     }
   }, []);
-
-  // useEffect(() => {
-  //   const unsub = onAuthStateChanged(auth, (user) => {
-  //     setUser(user);
-  //     console.log("stateChanged:", user);
-  //   });
-  //   return unsub;
-  // }, []);
 
   return (
     <Router basename="/karkade">

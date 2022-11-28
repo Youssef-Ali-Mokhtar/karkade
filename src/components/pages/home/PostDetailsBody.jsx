@@ -187,7 +187,7 @@ const PostDetailsBody = (props) => {
                 </p>
                 <div className="divider"/>
                 <div className="comments-section">
-                    <PostComment postId={props.postId} userData={props.userData}/>
+                    <PostComment postId={props.postId} post={props.data} userData={props.userData}/>
                     {props.data?.comments?
                         <CommentsList comments={Object.values(props.data.comments)}  postId={props.postId}/>:
                         <p>Be the first to comment!</p>}
