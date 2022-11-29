@@ -70,14 +70,25 @@ const InputPost = (props) => {
 
     const postHandler = (e) => {
         e.preventDefault();
-        if(image){
-            props.loadingHandler(true);
-            const imageRef = ref(storage, image.name);
-            uploadBytes(imageRef, image)
-            .then(() => {
-                getDownloadURL(imageRef)
-                .then((url) => {
-                    handleSubmit(url);
+        if(title.current.value){
+            if(image){
+                props.loadingHandler(true);
+                const imageRef = ref(storage, image.name);
+                uploadBytes(imageRef, image)
+                .then(() => {
+                    getDownloadURL(imageRef)
+                    .then((url) => {
+                        handleSubmit(url);
+                    })
+                    .catch((error) => {
+                        setImage(null);
+                        props.loadingHandler(false);
+                        props.overlayHandler(false);
+                        alert(error.message)
+                    });
+                    setImage(null);
+                    props.loadingHandler(false);
+                    props.overlayHandler(false);
                 })
                 .catch((error) => {
                     setImage(null);
@@ -85,23 +96,13 @@ const InputPost = (props) => {
                     props.overlayHandler(false);
                     alert(error.message)
                 });
-                setImage(null);
+            }else if(title||body){
+                props.loadingHandler(true);
+                handleSubmit();
                 props.loadingHandler(false);
                 props.overlayHandler(false);
-            })
-            .catch((error) => {
-                setImage(null);
-                props.loadingHandler(false);
-                props.overlayHandler(false);
-                alert(error.message)
-            });
-        }else if(title||body){
-            props.loadingHandler(true);
-            handleSubmit();
-            props.loadingHandler(false);
-            props.overlayHandler(false);
+            }
         }
-
 
       };
 

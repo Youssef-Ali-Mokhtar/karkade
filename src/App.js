@@ -18,9 +18,10 @@ import useFetch from "./components/useFetch";
 import useFetchById from "./components/useFetchById";
 import UpdateUserInfo from "./components/UpdateUserInfo";
 import spinningWheel from "./assets/loading.svg";
+import Search from "./components/Search";
 
 function App() {
-  const [notificationsNumberAlert, setNotificationsNumberAlert] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
   const [floatingSearch, setFloatingSearch] = useState(false);
   const [themeMode, setThemeMode] = useState(localStorage.getItem("themeMode"));
   const [postOverlay, setPostOverlay] = useState(false);
@@ -32,11 +33,10 @@ function App() {
   const r = document.querySelector(":root");
   const LIGHT = "light";
   const DARK = "dark";
+
   const fetchedData = useFetch(
     "https://karkade-development-default-rtdb.firebaseio.com/posts.json"
   );
-  
-
 
   useEffect(() => {
     if (localStorage.getItem("themeMode") === "dark") {
@@ -128,6 +128,18 @@ function App() {
             />
           </Overlay>
 
+          <Overlay
+            onClick={() => setOverlayUpdateInfo(false)}
+            overlay={overlayUpdateInfo}
+          >
+            <UpdateUserInfo
+              onClick={(e) => e.stopPropagation()}
+              overlayHandler={setOverlayUpdateInfo}
+              userInfo={userData}
+              loadingHandler={setLoading}
+            />
+          </Overlay>
+
           {mobileMode ? (
             <SideNavbar
               themeModeHandler={themeModeSwitchHandler}
@@ -142,20 +154,9 @@ function App() {
               postOverlayHandler={setPostOverlay}
               loggedInHandler={loggedInHandler}
               userInfo={userData}
+              searchValueHandler = {setSearchValue}
             />
           )}
-
-          <Overlay
-            onClick={() => setOverlayUpdateInfo(false)}
-            overlay={overlayUpdateInfo}
-          >
-            <UpdateUserInfo
-              onClick={(e) => e.stopPropagation()}
-              overlayHandler={setOverlayUpdateInfo}
-              userInfo={userData}
-              loadingHandler={setLoading}
-            />
-          </Overlay>
 
           <Overlay
             onClick={() => setOpenSideNavbar(false)}
@@ -169,6 +170,7 @@ function App() {
             <FloatingSearch
               onClick={(e) => e.stopPropagation()}
               overlayHandler={setFloatingSearch}
+              searchValueHandler = {setSearchValue}
             />
           </Overlay>
 
@@ -216,6 +218,7 @@ function App() {
                 element={<Profile posts={fetchedData}/>}
               />
               <Route exact path="/Bookmarks" element={<Bookmarks posts={fetchedData}/>} />
+              <Route exact path="/Search" element={<Search searchValue={searchValue}/>} />
               <Route
                 exact
                 path="/Settings"

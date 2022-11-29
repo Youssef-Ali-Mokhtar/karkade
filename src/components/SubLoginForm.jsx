@@ -4,7 +4,7 @@ const SubLoginForm = (props) => {
     <div className="input-post" onClick={props.onClick}>
         <IoMdClose className="close-icon" size={25} onClick={()=>props.overlayHandler(false)}/>
         {props.children}
-    </div> 
+    </div>
     );
 }
 

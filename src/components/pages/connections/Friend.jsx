@@ -17,13 +17,21 @@ const Friend = (props) => {
     },[userData])
 
     const followHandler = ()=>{
+        const follower = {
+            [localStorage.getItem("userId")]: true
+        }
+
+        const following = {
+            [props.user]: true
+        }
+
         const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         const d = new Date();
         let minute = d.getMinutes().toString();
         let hour = d.getHours().toString();
         let day = d.getDate().toString();
         let month = d.getMonth().toString();
-        let year = d.getFullYear().toString();
+        let year = d.getFullYear().toString(); 
         const notificationId = Date.now()+"n";
 
         const notificationPost = {
@@ -35,14 +43,6 @@ const Friend = (props) => {
             target: `/profile/${localStorage.getItem("userId")}`,
             checked: false,
             date: `${hour.length===1?`0${hour}`:hour}:${minute.length===1?`0${minute}`:minute} . ${day} ${months[month]} ${year}`
-        }
-
-        const follower = {
-            [localStorage.getItem("userId")]: true
-        }
-
-        const following = {
-            [props.user]: true
         }
 
         if(!follow){
@@ -75,7 +75,7 @@ const Friend = (props) => {
                 method: "DELETE"
             })
 
-            fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${props.user}/notifications/${notificationId}.json`, {
+            fetch(`https://karkade-development-default-rtdb.firebaseio.com/users/${props.user}/notifications/${localStorage.getItem("userId")+"n"}.json`, {
                 method: "DELETE"
             })
         }

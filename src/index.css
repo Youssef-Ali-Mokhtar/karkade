@@ -1198,11 +1198,13 @@ a{
 
 .notification-date-holder{
   display: flex;
+  justify-content: flex-start;
 }
 
 .notification-name-and-date{
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  /* align-items: center; */
 }
 
 .settings-row{

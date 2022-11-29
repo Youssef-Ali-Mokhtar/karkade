@@ -8,6 +8,7 @@ import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 
 const Navbar = (props) => {
+    const search = useRef();
     const navigate = useNavigate();
     const location = useLocation();
     const [loading, setLoading] = useState(false);
@@ -49,13 +50,20 @@ const Navbar = (props) => {
             <Link to="/Notifications" className="navbar-icons-wrapper" onClick={()=>setFocusedIcon("/Notifications")}>
                 <AiOutlineBell className={`navbar-icons ${focusedIcon==="/Notifications"?'focused-icon':''}`} size={25}/>
             </Link>
-            <form>
+            <form onSubmit={(e)=>{
+                e.preventDefault();
+                if(search.current.value){
+                    setFocusedIcon("/Search"); 
+                    props.searchValueHandler(search.current.value) ;
+                    navigate("/Search");
+                    search.current.value = "";
+                }}}>
                 <div className="search-container">
                     <AiOutlineSearch className="search-icon" size={18}/>
-                    <input type="text" placeholder="Search Karkade"/>
+                    <input type="text" placeholder="Search Karkade" ref={search}/>
                 </div>
             </form>
-            <MdDarkMode 
+            <MdDarkMode
                 onClick={props.themeModeHandler}
                 className="navbar-icons" 
                 size={25}

@@ -37,7 +37,7 @@ const Notifications = () => {
                     {note.map((notePost)=>{
                         return <Note unCheckedNotificationsHandler={setUncheckedNotifications} notePost={notePost} key={notePost.notificationId}/>
                     })}
-                    <p className="notifications-title">{uncheckedNotifications} Unchecked Notifications</p>
+                    <p className="notifications-title">{uncheckedNotifications} Unchecked Notification{uncheckedNotifications===1?"":"s"}</p>
                 </List>
         }
         {errorMessage && <div>{errorMessage}</div>}
